@@ -2,9 +2,11 @@ package com.example.digitalhub.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.digitalhub.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -31,4 +33,15 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+val DigitalFont = FontFamily(
+    Font(R.font.digimonbasic)
+)
+val Roboto = FontFamily(
+    Font(R.font.robotoregular, FontWeight.Normal),
+    Font(R.font.robotoregular, FontWeight.Bold),
+    Font(R.font.robotoregular, FontWeight.Thin)
+)
+val KenyanCoffee = FontFamily(
+    Font(R.font.kenyancoffeergit, FontWeight.Normal)
 )
