@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.digitalhub.di.LoginViewModelFactory
+import com.example.digitalhub.presentation.ui.components.FondoPrincipal
 import com.example.digitalhub.presentation.ui.components.LoginContentido
 import com.example.digitalhub.presentation.viewmodel.EventosNavegacion
 import com.example.digitalhub.presentation.viewmodel.LoginViewModel

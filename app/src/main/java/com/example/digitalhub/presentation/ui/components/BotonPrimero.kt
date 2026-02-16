@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 val ColorBoton = Color(0xFF004572)
 @Composable
 
-fun BotonEntrar(
+fun BotonPrimero(
     text : String,
     modifier: Modifier= Modifier,
     enabled : Boolean = true,

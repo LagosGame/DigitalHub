@@ -38,9 +38,7 @@ val DigitalFont = FontFamily(
     Font(R.font.digimonbasic)
 )
 val Roboto = FontFamily(
-    Font(R.font.robotoregular, FontWeight.Normal),
-    Font(R.font.robotoregular, FontWeight.Bold),
-    Font(R.font.robotoregular, FontWeight.Thin)
+    Font(R.font.robotoregular, FontWeight.Normal)
 )
 val KenyanCoffee = FontFamily(
     Font(R.font.kenyancoffeergit, FontWeight.Normal)
