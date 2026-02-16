@@ -5,7 +5,7 @@ import com.example.digitalhub.data.mapper.toDomain
 import com.example.digitalhub.domain.model.AutentificaciónResultado
 import com.example.digitalhub.domain.repository.AutentificacionRepository
 
-class AtentifiRepositoryImpl
+class AuthRepositoryImpl
     (private val fakeAuthDataSource: FakeAuthDataSource)
     : AutentificacionRepository
 {
