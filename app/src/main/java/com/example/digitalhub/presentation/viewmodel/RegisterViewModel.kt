@@ -33,6 +33,7 @@ class RegisterViewModel(
                     state.confirmPassword
 
                 ),
+                usernameError = if (username.isBlank()) "Username cannot be blank" else null,
                 errorMessage = null
             )
         }
@@ -48,6 +49,11 @@ class RegisterViewModel(
                     state.password,
                     state.confirmPassword
                 ),
+                emailError = when {
+                    email.isBlank() -> "Email cannot be blank"
+                    !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email"
+                    else -> null
+                },
                 errorMessage = null
             )
         }
@@ -63,6 +69,15 @@ class RegisterViewModel(
                     password,
                     state.confirmPassword
                 ),
+                passwordError = when {
+                    password.isBlank() -> "Password cannot be blank"
+                    password.length < 6 -> "At least 6 characters"
+                    else -> null
+                },
+                confirmPasswordError = if (
+                    state.confirmPassword.isNotBlank() &&
+                    state.confirmPassword != password
+                ) "Passwords doesn't match" else null,
                 errorMessage = null
             )
         }
@@ -78,12 +93,47 @@ class RegisterViewModel(
                     state.password,
                     confirmPassword
                 ),
+                confirmPasswordError = when {
+                    confirmPassword.isBlank() -> "Confirm your password"
+                    confirmPassword != state.password -> "Passwords doesn't match"
+                    else -> null
+                },
                 errorMessage = null
             )
         }
     }
 
     fun onRegisterClick(){
+        val currentState = _uiState.value
+
+        val usernameError = if (currentState.username.isBlank()) "Username cannot be blank" else null
+        val emailError = when {
+            currentState.email.isBlank() -> "Email cannot be blank"
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(currentState.email).matches() -> "Email no válido"
+            else -> null
+        }
+        val passwordError = when {
+            currentState.password.isBlank() -> "Password cannot be blank"
+            currentState.password.length < 6 -> "At least 6 characters"
+            else -> null
+        }
+        val confirmPasswordError = when {
+            currentState.confirmPassword.isBlank() -> "Confirm your password"
+            currentState.confirmPassword != currentState.password -> "Passwords doesn't match"
+            else -> null
+        }
+        if (usernameError != null || emailError != null ||
+            passwordError != null || confirmPasswordError != null) {
+            _uiState.update {
+                it.copy(
+                    usernameError = usernameError,
+                    emailError = emailError,
+                    passwordError = passwordError,
+                    confirmPasswordError = confirmPasswordError
+                )
+            }
+            return
+        }
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 

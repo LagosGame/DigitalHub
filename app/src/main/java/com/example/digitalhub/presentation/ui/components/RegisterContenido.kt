@@ -69,6 +69,7 @@ fun RegisterContentido(
                 onValueChange = onUsernameChange,
                 enabled = !uiState.isLoading
             )
+            TextoError(uiState.usernameError)
 
             //Email
             TextfieldUsuario(
@@ -78,6 +79,7 @@ fun RegisterContentido(
                 onValueChange = onEmailChange,
                 enabled = !uiState.isLoading
             )
+            TextoError(uiState.emailError)
 
             //Contraseña
             TextfieldUsuario(
@@ -88,6 +90,7 @@ fun RegisterContentido(
                 isPassword = true,
                 enabled = !uiState.isLoading
             )
+            TextoError(uiState.passwordError)
 
             // Campo Confirmar Contraseña
             TextfieldUsuario(
@@ -98,18 +101,8 @@ fun RegisterContentido(
                 isPassword = true,
                 enabled = !uiState.isLoading
             )
+            TextoError(uiState.confirmPasswordError)
 
-            //Mensaje de error
-            if (uiState.errorMessage != null) {
-                Text(
-                    text = uiState.errorMessage,
-                    color = Color.Red,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
 
             //Registrarse
             Column(
@@ -123,7 +116,7 @@ fun RegisterContentido(
                         .width(240.dp)
                         .height(50.dp),
                     text = if (uiState.isLoading) "Loading..." else "Sign in",
-                    enabled = uiState.isRegisterEnabled && !uiState.isLoading,
+                    enabled = !uiState.isLoading,
                     onClick = onRegisterClick
                 )
             }
