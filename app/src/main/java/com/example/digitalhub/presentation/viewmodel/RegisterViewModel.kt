@@ -19,7 +19,7 @@ class RegisterViewModel(
     val uiState = _uiState.asStateFlow()
 
     private val _navigationEvent = MutableStateFlow<RegisterNavigationEvent?>(null)
-    private val navigationEvent = _navigationEvent.asStateFlow()
+    val navigationEvent = _navigationEvent.asStateFlow()
 
 
     fun onUsernameChange(username: String){

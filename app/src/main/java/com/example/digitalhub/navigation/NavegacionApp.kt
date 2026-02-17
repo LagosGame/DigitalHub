@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
+import com.example.digitalhub.presentation.ui.screen.RegisterScreen
 
 @Composable
 fun NavegacionApp(
@@ -23,10 +24,20 @@ fun NavegacionApp(
                     println("Login")
                 },
                 onRegisterSuccess = {
-                    println("Navegar registro")
+                    navController.navigate("register")
                 }
             )
 
+        }
+        composable("register"){
+            RegisterScreen(
+                onRegisterSuccess = { username->
+                    println("Register")
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 
