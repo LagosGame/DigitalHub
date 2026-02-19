@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
+import com.example.digitalhub.presentation.ui.screen.RegisterScreen
 
 @Composable
 fun NavegacionApp(
@@ -26,11 +27,24 @@ fun NavegacionApp(
                     }
                 },
                 onRegisterSuccess = {
-                    println("Navegar registro")
+                    navController.navigate("register")
                 }
             )
 
         }
+        composable("register") {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable("home") {
             MainScreen(
                 onBiblioteca = {
@@ -48,9 +62,18 @@ fun NavegacionApp(
                 onPerfil = {
                     println("Navegar a Perfil")
                     // TODO: navController.navigate("perfil")
+                })
+        }
+        composable("register"){
+            RegisterScreen(
+                onRegisterSuccess = { username->
+                    println("Register")
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }
-    }
 
+    }
 }
