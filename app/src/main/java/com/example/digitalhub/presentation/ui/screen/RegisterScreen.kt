@@ -13,7 +13,7 @@ import com.example.digitalhub.presentation.viewmodel.RegisterViewModel
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory()),
-    onRegisterSuccess: (username: String) -> Unit,
+    onRegisterSuccess: () -> Unit,
     onBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -22,8 +22,8 @@ fun RegisterScreen(
     //Nav
     LaunchedEffect(navigationEvent) {
         when (val event = navigationEvent) {
-            is RegisterNavigationEvent.NavegarAMain -> {
-                onRegisterSuccess(event.username)
+            is RegisterNavigationEvent.NavegarAHome -> {
+                onRegisterSuccess()
                 viewModel.navegacionCompleta()
             }
             RegisterNavigationEvent.NavegarAtras -> {

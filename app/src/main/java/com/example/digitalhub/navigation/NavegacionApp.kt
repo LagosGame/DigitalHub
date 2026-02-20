@@ -66,8 +66,10 @@ fun NavegacionApp(
         }
         composable("register"){
             RegisterScreen(
-                onRegisterSuccess = { username->
-                    println("Register")
+                onRegisterSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
                 onBack = {
                     navController.popBackStack()
