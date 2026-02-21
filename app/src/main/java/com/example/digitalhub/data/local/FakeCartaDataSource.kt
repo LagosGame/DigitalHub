@@ -1,0 +1,332 @@
+package com.example.digitalhub.data.local
+
+import com.example.digitalhub.domain.model.Carta
+import com.example.digitalhub.R
+import com.example.digitalhub.domain.model.ColorCarta
+import com.example.digitalhub.domain.model.Nivel
+import com.example.digitalhub.domain.model.RarezaCarta
+import com.example.digitalhub.domain.model.TipoCarta
+import com.example.digitalhub.domain.model.expansiones
+
+class FakeCartaDataSource {
+
+    fun getCartas(): List<Carta>{
+        return listOf(
+
+            Carta(
+                id = "BT1-001",
+                nombre = "Yokomon",
+                imagenId = R.drawable.bt1001,
+                color = listOf(ColorCarta.RED),
+                coste = 0,
+                rareza = RarezaCarta.RARE,
+                tipo = TipoCarta.DIGIEGG,
+                nivel = Nivel.LV2,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-002",
+                nombre = "Bebydomon",
+                imagenId = R.drawable.bt1002,
+                color = listOf(ColorCarta.RED),
+                coste = 0,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIEGG,
+                nivel = Nivel.LV2,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-009",
+                nombre = "Monodramon",
+                imagenId = R.drawable.bt1009,
+                color = listOf(ColorCarta.RED),
+                coste = 2,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV3,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-010",
+                nombre = "Agumon",
+                imagenId = R.drawable.bt1010,
+                color = listOf(ColorCarta.RED),
+                coste = 3,
+                rareza = RarezaCarta.RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV3,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-011",
+                nombre = "Agumon Expert",
+                imagenId = R.drawable.bt1011,
+                color = listOf(ColorCarta.RED),
+                coste = 3,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV3,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-012",
+                nombre = "Biyomon",
+                imagenId = R.drawable.bt1012,
+                color = listOf(ColorCarta.RED),
+                coste = 3,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV3,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-013",
+                nombre = "Muchomon",
+                imagenId = R.drawable.bt1013,
+                color = listOf(ColorCarta.RED),
+                coste = 3,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV3,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-014",
+                nombre = "Kokatorimon",
+                imagenId = R.drawable.bt1014,
+                color = listOf(ColorCarta.RED),
+                coste = 3,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-015",
+                nombre = "Greymon",
+                imagenId = R.drawable.bt1015,
+                color = listOf(ColorCarta.RED),
+                coste = 4,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-016",
+                nombre = "Tyrannomon",
+                imagenId = R.drawable.bt1016,
+                color = listOf(ColorCarta.RED),
+                coste = 4,
+                rareza = RarezaCarta.RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-014",
+                nombre = "Birdramon",
+                imagenId = R.drawable.bt1017,
+                color = listOf(ColorCarta.RED),
+                coste = 4,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-019",
+                nombre = "DarkTyrannomon",
+                imagenId = R.drawable.bt1019,
+                color = listOf(ColorCarta.RED),
+                coste = 6,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-020",
+                nombre = "Groundramon",
+                imagenId = R.drawable.bt1020,
+                color = listOf(ColorCarta.RED),
+                coste = 5,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV5,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-021",
+                nombre = "MetalGreymon",
+                imagenId = R.drawable.bt1021,
+                color = listOf(ColorCarta.RED),
+                coste = 6,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV5,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-025",
+                nombre = "WarGreymon",
+                imagenId = R.drawable.bt1025,
+                color = listOf(ColorCarta.RED),
+                coste = 12,
+                rareza = RarezaCarta.SUPER_RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV6,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-026",
+                nombre = "Breakdramon",
+                imagenId = R.drawable.bt1026,
+                color = listOf(ColorCarta.RED),
+                coste = 12,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV6,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-085",
+                nombre = "Tai Kamiya",
+                imagenId = R.drawable.bt1085,
+                color = listOf(ColorCarta.RED),
+                coste = 4,
+                rareza = RarezaCarta.RARE,
+                tipo = TipoCarta.TAMER,
+                nivel = null,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-090",
+                nombre = "Gravity Crush",
+                imagenId = R.drawable.bt1090,
+                color = listOf(ColorCarta.RED),
+                coste = 0,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.OPTION,
+                nivel = null,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-095",
+                nombre = "Brave Shield",
+                imagenId = R.drawable.bt1095,
+                color = listOf(ColorCarta.RED),
+                coste = 5,
+                rareza = RarezaCarta.RARE,
+                tipo = TipoCarta.OPTION,
+                nivel = null,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-114",
+                nombre = "MetalGreymon",
+                imagenId = R.drawable.bt1114,
+                color = listOf(ColorCarta.RED),
+                coste = 8,
+                rareza = RarezaCarta.SECRET_RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV5,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "ST1-06",
+                nombre = "Coredramon",
+                imagenId = R.drawable.st106,
+                color = listOf(ColorCarta.RED),
+                coste = 5,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[3],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "ST1-07",
+                nombre = "Greymon",
+                imagenId = R.drawable.st107,
+                color = listOf(ColorCarta.RED),
+                coste = 5,
+                rareza = RarezaCarta.COMMON,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV4,
+                expansion = expansiones[3],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "ST1-16",
+                nombre = "Gaia Force",
+                imagenId = R.drawable.st116,
+                color = listOf(ColorCarta.RED),
+                coste = 8,
+                rareza = RarezaCarta.UNCOMMON,
+                tipo = TipoCarta.TAMER,
+                nivel = null,
+                expansion = expansiones[3],
+                esFav = false,
+                esAlt = false
+            ),
+            Carta(
+                id = "BT1-084",
+                nombre = "Omnimon",
+                imagenId = R.drawable.bt1084,
+                color = listOf(ColorCarta.WHITE),
+                coste = 15,
+                rareza = RarezaCarta.SUPER_RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV7,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = false
+            ),
+
+        )
+    }
+
+}
