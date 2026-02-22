@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.digitalhub.presentation.ui.screen.BibliotecaScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
@@ -48,8 +49,7 @@ fun NavegacionApp(
         composable("home") {
             MainScreen(
                 onBiblioteca = {
-                    println("Navegar a Biblioteca")
-                    // TODO: navController.navigate("biblioteca")
+                    navController.navigate("biblioteca")
                 },
                 onConstruir = {
                     println("Navegar a Construir mazo")
@@ -73,6 +73,18 @@ fun NavegacionApp(
                 },
                 onBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable("biblioteca") {
+            BibliotecaScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onCartaClick = { cartaId ->
+                    println("Click en carta: $cartaId")
+
                 }
             )
         }
