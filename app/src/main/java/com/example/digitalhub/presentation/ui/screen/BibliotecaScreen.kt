@@ -29,6 +29,7 @@ fun BibliotecaScreen(
         onSeleccionarExpansion = viewModel::selectExpansion,
         onActivarFavoritas = viewModel::activarFav,
         onActivarAlternativas = viewModel::activarAlt,
-        onBusquedaChange = viewModel::onBusquedaChange
+        onBusquedaChange = viewModel::onBusquedaChange,
+        onLimpiarFiltros = viewModel::limpiarFiltros
     )
 }

@@ -19,14 +19,13 @@ import com.example.digitalhub.presentation.ui.state.Selector
 fun Filtros(
     uiState: BibliotecaUiState,
     onAbrirSelector: (Selector) -> Unit,
-    onSeleccionarColor: (ColorCarta) -> Unit,
-    onSeleccionarCoste: (Int) -> Unit,
-    onSeleccionarRareza: (RarezaCarta) -> Unit,
-    onSeleccionarTipo: (TipoCarta) -> Unit,
-    onSeleccionarNivel: (Nivel) -> Unit,
-    onSeleccionarExpansion: (Expansion) -> Unit,
-    onActivarFavoritas: () -> Unit,
-    onActivarAlternativas: () -> Unit
+    onSeleccionarColor: (ColorCarta?) -> Unit,
+    onSeleccionarCoste: (Int?) -> Unit,
+    onSeleccionarRareza: (RarezaCarta?) -> Unit,
+    onSeleccionarTipo: (TipoCarta?) -> Unit,
+    onSeleccionarNivel: (Nivel?) -> Unit,
+    onSeleccionarExpansion: (Expansion?) -> Unit,
+    onLimpiarFiltros: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -74,6 +73,26 @@ fun Filtros(
                 }
             }
 
+
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        //2ª
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            //Expansión
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                BotonFiltro(
+                    texto = uiState.expansionFiltro?.codigo ?: "ALL",
+                    onClick = { onAbrirSelector(Selector.EXPANSION) }
+                )
+                if (uiState.selectorAbierto == Selector.EXPANSION) {
+                    SelectorExpansion { onSeleccionarExpansion(it) }
+                }
+            }
             //Nivel
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonFiltro(
@@ -95,39 +114,13 @@ fun Filtros(
                     SelectorTipo { onSeleccionarTipo(it) }
                 }
             }
+
         }
+        Spacer(modifier = Modifier.height(10.dp))
 
-        Spacer(modifier = Modifier.height(15.dp))
-
-        //2ª
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            //Expansión
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                BotonFiltro(
-                    texto = uiState.expansionFiltro?.codigo ?: "ALL",
-                    onClick = { onAbrirSelector(Selector.EXPANSION) }
-                )
-                if (uiState.selectorAbierto == Selector.EXPANSION) {
-                    SelectorExpansion { onSeleccionarExpansion(it) }
-                }
-            }
-
-            //Favoritas
-            BotonFiltroOn(
-                texto = "Favoritas",
-                seleccionado = uiState.soloFav,
-                onClick = onActivarFavoritas
-            )
-
-            //Alternativas
-            BotonFiltroOn(
-                texto = "Alternativas",
-                seleccionado = uiState.soloAlt,
-                onClick = onActivarAlternativas
-            )
-        }
+        BotonFiltro(
+            texto = "Limpiar Filtros",
+            onClick = onLimpiarFiltros
+        )
     }
 }

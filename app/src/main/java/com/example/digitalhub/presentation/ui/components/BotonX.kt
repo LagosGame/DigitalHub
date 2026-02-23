@@ -28,7 +28,7 @@ fun BotonX(onBack: () -> Unit) {
             onClick = onBack,
             modifier = Modifier
                 .size(40.dp)
-                .background(Color.Red.copy(alpha = 0.7f), CircleShape)
+                .background(Color.Gray.copy(alpha = 0.7f), CircleShape)
         ) {
             Icon(
                 imageVector = Icons.Default.Close,

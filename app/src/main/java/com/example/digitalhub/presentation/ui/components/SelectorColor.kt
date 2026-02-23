@@ -1,7 +1,9 @@
 package com.example.digitalhub.presentation.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -9,21 +11,30 @@ import com.example.digitalhub.domain.model.ColorCarta
 
 @Composable
 fun SelectorColor(
-    onSelect: (ColorCarta)-> Unit
+    onSelect: (ColorCarta?)-> Unit
 ){
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp))
-    {
-        ColorCarta.values().forEach { colorCarta ->
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
+        item {
+            BotonColor(
+                text = "ALL",
+                color = Color.DarkGray,
+                onClick = { onSelect(null) }
+            )
+        }
+        items(ColorCarta.values().toList()) { colorCarta ->
             BotonColor(
                 text = colorCarta.nombreDisplay.first().toString(),
                 color = colorCarta.toColor(),
-                onClick = {onSelect(colorCarta)}
+                onClick = { onSelect(colorCarta) }
             )
         }
     }
 }
 
-fun ColorCarta.toColor(): Color{
+fun ColorCarta.toColor(): Color {
     return when(this){
         ColorCarta.RED -> Color.Red
         ColorCarta.BLUE -> Color.Blue

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.digitalhub.domain.model.*
 import com.example.digitalhub.presentation.ui.state.BibliotecaUiState
 import com.example.digitalhub.presentation.ui.state.Selector
@@ -28,15 +30,16 @@ fun BibliotecaContentido(
     onBack: () -> Unit,
     onCartaClick: (String) -> Unit,
     onAbrirSelector: (Selector) -> Unit,
-    onSeleccionarColor: (ColorCarta) -> Unit,
-    onSeleccionarCoste: (Int) -> Unit,
-    onSeleccionarRareza: (RarezaCarta) -> Unit,
-    onSeleccionarTipo: (TipoCarta) -> Unit,
-    onSeleccionarNivel: (Nivel) -> Unit,
-    onSeleccionarExpansion: (Expansion) -> Unit,
+    onSeleccionarColor: (ColorCarta?) -> Unit,
+    onSeleccionarCoste: (Int?) -> Unit,
+    onSeleccionarRareza: (RarezaCarta?) -> Unit,
+    onSeleccionarTipo: (TipoCarta?) -> Unit,
+    onSeleccionarNivel: (Nivel?) -> Unit,
+    onSeleccionarExpansion: (Expansion?) -> Unit,
     onActivarFavoritas: () -> Unit,
     onActivarAlternativas: () -> Unit,
-    onBusquedaChange: (String) -> Unit
+    onBusquedaChange: (String) -> Unit,
+    onLimpiarFiltros:()-> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         FondoPrincipal()
@@ -47,6 +50,7 @@ fun BibliotecaContentido(
                 .padding(top = 10.dp),
             verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             BotonX(onBack)
             Filtros(
                 uiState = uiState,
@@ -57,8 +61,7 @@ fun BibliotecaContentido(
                 onSeleccionarTipo = onSeleccionarTipo,
                 onSeleccionarNivel = onSeleccionarNivel,
                 onSeleccionarExpansion = onSeleccionarExpansion,
-                onActivarFavoritas = onActivarFavoritas,
-                onActivarAlternativas = onActivarAlternativas
+                onLimpiarFiltros = onLimpiarFiltros
             )
             if (uiState.isLoading) {
                 Box(

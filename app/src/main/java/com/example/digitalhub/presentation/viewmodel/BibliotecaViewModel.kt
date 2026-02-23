@@ -93,7 +93,7 @@ class BibliotecaViewModel(
         }
     }
 
-    fun selectColor(color : ColorCarta){
+    fun selectColor(color : ColorCarta?){
         _uiState.update {
             it.copy(
                 colorFiltro = color,
@@ -102,7 +102,7 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectCoste(coste : Int) {
+    fun selectCoste(coste : Int?) {
         _uiState.update {
             it.copy(
                 costeFiltro = coste,
@@ -111,7 +111,7 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectRareza(rareza : RarezaCarta) {
+    fun selectRareza(rareza : RarezaCarta?) {
         _uiState.update {
             it.copy(
                 rarezaFiltro = rareza,
@@ -120,7 +120,7 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectTipo(tipo : TipoCarta) {
+    fun selectTipo(tipo : TipoCarta?) {
         _uiState.update {
             it.copy(
                 tipoFiltro = tipo,
@@ -129,7 +129,7 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectNivel(nivel : Nivel) {
+    fun selectNivel(nivel : Nivel?) {
         _uiState.update {
             it.copy(
                 nivelFiltro = nivel,
@@ -138,7 +138,7 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectExpansion(expansion : Expansion) {
+    fun selectExpansion(expansion : Expansion?) {
         _uiState.update {
             it.copy(
                 expansionFiltro = expansion,
