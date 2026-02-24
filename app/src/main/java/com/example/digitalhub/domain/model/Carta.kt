@@ -6,12 +6,23 @@ data class Carta(
     val imagenId: Int,
     val color : List<ColorCarta>,
     val coste : Int,
+    val costeEvolucion: Int? = null,
     val rareza : RarezaCarta,
     val tipo : TipoCarta,
     val nivel : Nivel?,
     val expansion : Expansion,
+
+    //Parte usuario//
     val esFav : Boolean = false,
-    val esAlt : Boolean = false
+    val cantidadEnBiblioteca: Int = 0,
+
+    //Alternativa
+    val esAlt : Boolean = false,
+
+    //Info detallada
+    val dp: Int? = null,
+    val atributo: String? = null,
+    val texto: String? = null
 )
 
 enum class ColorCarta(val nombreDisplay : String){

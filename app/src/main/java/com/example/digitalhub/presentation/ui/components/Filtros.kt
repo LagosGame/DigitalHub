@@ -119,7 +119,7 @@ fun Filtros(
         Spacer(modifier = Modifier.height(10.dp))
 
         BotonFiltro(
-            texto = "Limpiar Filtros",
+            texto = "Clean",
             onClick = onLimpiarFiltros
         )
     }

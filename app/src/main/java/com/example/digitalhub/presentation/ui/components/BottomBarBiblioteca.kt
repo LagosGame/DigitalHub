@@ -24,6 +24,7 @@ fun BottomBarBiblioteca(
     onBusquedaChange: (String) -> Unit,
     onActivarFavoritas: () -> Unit,
     onActivarAlternativas: () -> Unit,
+    onActivarSoloMiBiblioteca: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,7 +37,7 @@ fun BottomBarBiblioteca(
         TextField(
             value = uiState.busqueda,
             onValueChange = onBusquedaChange,
-            placeholder = { Text("Búsqueda...") },
+            placeholder = { Text("Search...") },
             modifier = Modifier.fillMaxWidth(0.9f)
         )
 
@@ -51,22 +52,34 @@ fun BottomBarBiblioteca(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text("Collection", color = Color.White, fontSize = 10.sp)
+                Switch(
+                    checked = uiState.soloMiBiblioteca,
+                    onCheckedChange = { onActivarSoloMiBiblioteca() }
+                )
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text("Mi biblioteca", color = Color.White, fontSize = 10.sp)
+                Text("Favourites", color = Color.White, fontSize = 10.sp)
                 Switch(
                     checked = uiState.soloFav,
                     onCheckedChange = { onActivarFavoritas() }
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(4.dp))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text("Arte alternativo", color = Color.White, fontSize = 10.sp)
+                Text("Alt. Art", color = Color.White, fontSize = 10.sp)
                 Switch(
                     checked = uiState.soloAlt,
                     onCheckedChange = { onActivarAlternativas() }

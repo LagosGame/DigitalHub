@@ -38,6 +38,7 @@ fun BibliotecaContentido(
     onSeleccionarExpansion: (Expansion?) -> Unit,
     onActivarFavoritas: () -> Unit,
     onActivarAlternativas: () -> Unit,
+    onActivarSoloMiBiblioteca: () -> Unit,
     onBusquedaChange: (String) -> Unit,
     onLimpiarFiltros:()-> Unit
 ) {
@@ -47,7 +48,7 @@ fun BibliotecaContentido(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 10.dp),
+                .padding(10.dp),
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(20.dp))
@@ -104,6 +105,7 @@ fun BibliotecaContentido(
                 onBusquedaChange = onBusquedaChange,
                 onActivarFavoritas = onActivarFavoritas,
                 onActivarAlternativas = onActivarAlternativas,
+                onActivarSoloMiBiblioteca=onActivarSoloMiBiblioteca,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }

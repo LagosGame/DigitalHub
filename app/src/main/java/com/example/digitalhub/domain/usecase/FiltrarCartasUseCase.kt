@@ -19,7 +19,8 @@ class FiltrarCartasUseCase(
         nivel: Nivel? = null,
         expansion: Expansion? = null,
         soloFav: Boolean = false,
-        soloAlt: Boolean = false
+        soloAlt: Boolean = false,
+        soloMiBiblioteca: Boolean = false
     ): List<Carta>
     {
         return repository.filtrarCartas(
@@ -30,7 +31,8 @@ class FiltrarCartasUseCase(
             nivel = nivel,
             expansion = expansion,
             soloFav = soloFav,
-            soloAlt = soloAlt
+            soloAlt = soloAlt,
+            soloMiBiblioteca = soloMiBiblioteca
         )
     }
 }

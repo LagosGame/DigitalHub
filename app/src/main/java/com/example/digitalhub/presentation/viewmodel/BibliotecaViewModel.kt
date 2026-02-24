@@ -65,7 +65,8 @@ class BibliotecaViewModel(
                     nivel = _uiState.value.nivelFiltro,
                     expansion = _uiState.value.expansionFiltro,
                     soloFav = _uiState.value.soloFav,
-                    soloAlt = _uiState.value.soloAlt
+                    soloAlt = _uiState.value.soloAlt,
+                    soloMiBiblioteca = _uiState.value.soloMiBiblioteca
                 )
                 _uiState.update {
                     it.copy(
@@ -82,6 +83,13 @@ class BibliotecaViewModel(
                 }
             }
         }
+    }
+
+    fun activarSoloMiBiblioteca() {
+        _uiState.update {
+            it.copy(soloMiBiblioteca = !it.soloMiBiblioteca)
+        }
+        aplicarFiltros()
     }
     //Abir y cerrar los selectores de filtros
 
@@ -187,6 +195,7 @@ class BibliotecaViewModel(
                 expansionFiltro = null,
                 soloFav = false,
                 soloAlt = false,
+                soloMiBiblioteca = false,
                 selectorAbierto = null,
                 busqueda = ""
             )

@@ -2,6 +2,7 @@ package com.example.digitalhub.presentation.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.digitalhub.di.BibliotecaViewModelFactory
@@ -29,7 +30,16 @@ fun BibliotecaScreen(
         onSeleccionarExpansion = viewModel::selectExpansion,
         onActivarFavoritas = viewModel::activarFav,
         onActivarAlternativas = viewModel::activarAlt,
+        onActivarSoloMiBiblioteca = viewModel::activarSoloMiBiblioteca,
         onBusquedaChange = viewModel::onBusquedaChange,
         onLimpiarFiltros = viewModel::limpiarFiltros
     )
+}
+@Preview
+@Composable
+fun BibliotecaPreview(
+){
+    BibliotecaScreen(
+        onBack = {}
+    ) { }
 }

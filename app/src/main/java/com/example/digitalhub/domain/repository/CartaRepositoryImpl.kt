@@ -27,7 +27,8 @@ class CartaRepositoryImpl(
         nivel: Nivel?,
         expansion: Expansion?,
         soloFav: Boolean,
-        soloAlt: Boolean
+        soloAlt: Boolean,
+        soloMiBiblioteca: Boolean
     ): List<Carta> {
 
         var cartasFiltradas = fakeDataSource.getCartas()
@@ -57,6 +58,9 @@ class CartaRepositoryImpl(
         }
         if (soloAlt){
             cartasFiltradas= cartasFiltradas.filter { it.esAlt }
+        }
+        if (soloMiBiblioteca) {
+            cartasFiltradas = cartasFiltradas.filter { it.cantidadEnBiblioteca > 0 }
         }
 
         return cartasFiltradas

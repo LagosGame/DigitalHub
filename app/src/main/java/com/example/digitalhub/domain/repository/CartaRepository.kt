@@ -21,6 +21,9 @@ interface CartaRepository {
         nivel : Nivel? = null,
         expansion : Expansion? = null,
         soloFav : Boolean = false,
-        soloAlt : Boolean = false
+        soloAlt : Boolean = false,
+        soloMiBiblioteca: Boolean = false
     ): List<Carta>
+
+
 }

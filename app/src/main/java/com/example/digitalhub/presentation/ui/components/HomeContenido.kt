@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.digitalhub.data.local.noticias
 import com.example.digitalhub.presentation.ui.state.MainUiState
+import com.example.digitalhub.ui.theme.Kenyan
 import com.example.digitalhub.ui.theme.Roboto
 @Composable
 fun HomeContentido(
@@ -87,9 +88,9 @@ fun HomeContentido(
                 text = "Library",
                 modifier = Modifier
                     .width(240.dp)
-                    .height(50.dp),
+                    .height(60.dp),
                 fontSize = 32.sp,
-                fontFamily = Roboto,
+                fontFamily = Kenyan,
                 fontWeight = FontWeight.Normal,
                 isEnabled = true,
                 onClick = onBiblioteca
@@ -99,9 +100,9 @@ fun HomeContentido(
                 text = "Build deck",
                 modifier = Modifier
                     .width(240.dp)
-                    .height(50.dp),
+                    .height(60.dp),
                 fontSize = 32.sp,
-                fontFamily = Roboto,
+                fontFamily = Kenyan,
                 fontWeight = FontWeight.Normal,
                 isEnabled = true,
                 onClick = onConstruir
@@ -111,9 +112,9 @@ fun HomeContentido(
                 text = "Deck list",
                 modifier = Modifier
                     .width(240.dp)
-                    .height(50.dp),
+                    .height(60.dp),
                 fontSize = 32.sp,
-                fontFamily = Roboto,
+                fontFamily = Kenyan,
                 fontWeight = FontWeight.Normal,
                 isEnabled = true,
                 onClick = onLista
@@ -123,9 +124,9 @@ fun HomeContentido(
                 text = "Profile",
                 modifier = Modifier
                     .width(240.dp)
-                    .height(50.dp),
+                    .height(60.dp),
                 fontSize = 32.sp,
-                fontFamily = Roboto,
+                fontFamily = Kenyan,
                 fontWeight = FontWeight.Normal,
                 isEnabled = true,
                 onClick = onPerfil

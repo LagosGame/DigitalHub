@@ -23,7 +23,7 @@ data class BibliotecaUiState(
     val expansionFiltro: Expansion? = null,
     val soloFav: Boolean = false,
     val soloAlt: Boolean = false,
-
+    val soloMiBiblioteca: Boolean = false,
 
     //uistate//
 

@@ -24,7 +24,8 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV2,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 4
             ),
             Carta(
                 id = "BT1-002",
@@ -37,7 +38,8 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV2,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 0
             ),
             Carta(
                 id = "BT1-009",
@@ -50,7 +52,8 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV3,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 3
             ),
             Carta(
                 id = "BT1-010",
@@ -63,7 +66,8 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV3,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 4
             ),
             Carta(
                 id = "BT1-011",
@@ -76,7 +80,8 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV3,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 1
             ),
             Carta(
                 id = "BT1-012",
@@ -206,7 +211,22 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV6,
                 expansion = expansiones[0],
                 esFav = false,
-                esAlt = false
+                esAlt = false,
+                cantidadEnBiblioteca = 2
+            ),
+            Carta(
+                id = "BT1-025",
+                nombre = "WarGreymon",
+                imagenId = R.drawable.bt1025a,
+                color = listOf(ColorCarta.RED),
+                coste = 12,
+                rareza = RarezaCarta.SUPER_RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV6,
+                expansion = expansiones[0],
+                esFav = false,
+                esAlt = true,
+                cantidadEnBiblioteca = 1
             ),
             Carta(
                 id = "BT1-026",

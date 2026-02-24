@@ -43,3 +43,6 @@ val Roboto = FontFamily(
 val KenyanCoffee = FontFamily(
     Font(R.font.kenyancoffeergit, FontWeight.Normal)
 )
+val Kenyan = FontFamily(
+    Font(R.font.kenyan, FontWeight.Normal)
+)
