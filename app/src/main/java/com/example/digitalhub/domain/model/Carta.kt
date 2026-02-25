@@ -1,5 +1,7 @@
 package com.example.digitalhub.domain.model
 
+import kotlin.String
+
 data class Carta(
     val id : String,
     val nombre : String,
@@ -21,8 +23,10 @@ data class Carta(
 
     //Info detallada
     val dp: Int? = null,
+    val rango: String? = null,
     val atributo: String? = null,
-    val texto: String? = null
+    val trait : String? = null,
+    val texto: String? = null,
 )
 
 enum class ColorCarta(val nombreDisplay : String){

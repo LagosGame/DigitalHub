@@ -206,16 +206,23 @@ class FakeCartaDataSource {
                 imagenId = R.drawable.bt1025,
                 color = listOf(ColorCarta.RED),
                 coste = 12,
+                costeEvolucion = 3,
                 rareza = RarezaCarta.SUPER_RARE,
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV6,
                 expansion = expansiones[0],
-                esFav = false,
+                esFav = true,
                 esAlt = false,
-                cantidadEnBiblioteca = 2
+                cantidadEnBiblioteca = 2,
+                dp = 11000,
+                rango = "Mega",
+                atributo = "Vaccine",
+                trait = "Dragonkin",
+                texto = "[When Digivolving] This Digimon gains ＜Security A. +1＞ for the turn. (This Digimon checks 1 additional security card.)\n" +
+                        "[Your Turn] This Digimon doesn't activate [Security] skills on Option cards it checks."
             ),
             Carta(
-                id = "BT1-025",
+                id = "BT1-025A",
                 nombre = "WarGreymon",
                 imagenId = R.drawable.bt1025a,
                 color = listOf(ColorCarta.RED),

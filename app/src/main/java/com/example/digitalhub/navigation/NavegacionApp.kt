@@ -2,10 +2,13 @@ package com.example.digitalhub.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.digitalhub.presentation.ui.screen.BibliotecaScreen
+import com.example.digitalhub.presentation.ui.screen.CartaDetalleScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
@@ -83,8 +86,26 @@ fun NavegacionApp(
                     navController.popBackStack()
                 },
                 onCartaClick = { cartaId ->
-                    println("Click en carta: $cartaId")
+                    navController.navigate("carta/$cartaId")
 
+                }
+            )
+        }
+        composable(
+            route = "carta/{cartaId}",
+            arguments = listOf(
+                navArgument("cartaId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val cartaId = backStackEntry.arguments?.getString("cartaId") ?: ""
+
+            CartaDetalleScreen(
+                cartaId = cartaId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onAddToDeck = {
+                    println("Añadir carta $cartaId a mazo")
                 }
             )
         }

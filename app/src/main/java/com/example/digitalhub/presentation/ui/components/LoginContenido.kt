@@ -71,7 +71,7 @@ fun LoginContentido(
                 key("subtitulo") {
                 //Texto pequeño//
                 LetrasBordes(
-                    "Crea, comparte y mejora en Digimon TCG",
+                    "Create, share and get better at DigimonTCG",
                     fontSize = 18.sp,
                     fontFamily = Roboto,
                     fontWeight = FontWeight.Normal,
@@ -119,7 +119,7 @@ fun LoginContentido(
                     key("subtitulo") {
                         //Texto que nos redirige a RegistroScreen onClick//
                         LetrasBordes(
-                            "¿No tienes cuenta? \n Registrate",
+                            "Create an account",
                             fontSize = 18.sp,
                             fontFamily = Roboto,
                             fontWeight = FontWeight.Normal,
