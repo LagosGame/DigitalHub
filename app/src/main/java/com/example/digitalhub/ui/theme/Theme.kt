@@ -75,7 +75,7 @@ fun estiloParaColor(colorCarta: ColorCarta): EstiloInfoCarta {
     } else {
         val colorBase = colorCarta.toColor()
         EstiloInfoCarta(
-            fondo = colorBase.copy(alpha = 0.8f),
+            fondo = colorBase,
             texto = Color.White,
             borde = Color.White
         )

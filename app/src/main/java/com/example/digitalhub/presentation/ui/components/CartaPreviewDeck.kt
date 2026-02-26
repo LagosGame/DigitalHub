@@ -2,6 +2,7 @@ package com.example.digitalhub.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
@@ -17,12 +18,18 @@ import com.example.digitalhub.R
 
 @Composable
 fun CartaPreviewDeck(
-    imagenId: Int = R.drawable.bt1025
+    imagenId: Int,
+    borderColor: Color = Color.Black
 ) {
     Box(
         modifier = Modifier
             .size(width = 50.dp, height = 70.dp)
             .clip(RoundedCornerShape(4.dp))
+            .border(
+                width = 2.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(4.dp)
+            )
             .background(Color.LightGray)
     ) {
         Image(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,8 +39,10 @@ fun ConstruirMazoContenido(
         modifier = Modifier.fillMaxSize()
     ){
         FondoPrincipal()
-        Column(modifier = Modifier.fillMaxSize())
+        Column(modifier = Modifier.fillMaxSize()
+            .padding(12.dp))
         {
+            Spacer(modifier = Modifier.height(20.dp))
             BotonX(onBack)
             Box(
                 modifier = Modifier
@@ -105,6 +108,10 @@ fun ConstruirMazoContenido(
                         items(uiState.mazos) { mazo ->
                             val colorMazo = mazo.colores.firstOrNull() ?: ColorCarta.RAINBOW
 
+                            val esBlanco = colorMazo == ColorCarta.WHITE
+                            val colorTexto = if (esBlanco) Color.Black else Color.White
+                            val colorBorde = if (esBlanco) Color.Black else Color.White
+
                             BoxInfoCarta(colorCarta = colorMazo) {
                                 Column(
                                     modifier = Modifier
@@ -123,7 +130,7 @@ fun ConstruirMazoContenido(
                                             text = mazo.nombre,
                                             fontSize = 18.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Color.White
+                                            color = colorTexto
                                         )
                                         IndicadorColorMazo(mazo.colores)
                                     }
@@ -134,12 +141,13 @@ fun ConstruirMazoContenido(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        CartaPreviewDeck(imagenId = mazo.portadaId)
+                                        CartaPreviewDeck(imagenId = mazo.portadaId,
+                                            borderColor = colorBorde)
 
                                         Text(
                                             text = "${mazo.cartasNormales} / ${mazo.cartasHuevo}",
                                             fontSize = 14.sp,
-                                            color = Color.White
+                                            color = colorTexto
                                         )
 
                                         AccionesDeck(
