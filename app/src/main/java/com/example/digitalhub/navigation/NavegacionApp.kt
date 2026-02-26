@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.digitalhub.presentation.ui.screen.BibliotecaScreen
 import com.example.digitalhub.presentation.ui.screen.CartaDetalleScreen
+import com.example.digitalhub.presentation.ui.screen.ConstruirMazoScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
@@ -55,8 +56,7 @@ fun NavegacionApp(
                     navController.navigate("biblioteca")
                 },
                 onConstruir = {
-                    println("Navegar a Construir mazo")
-                    // TODO: navController.navigate("construir")
+                    navController.navigate("construir_mazo")
                 },
                 onLista = {
                     println("Navegar a Lista de mazos")
@@ -88,6 +88,19 @@ fun NavegacionApp(
                 onCartaClick = { cartaId ->
                     navController.navigate("carta/$cartaId")
 
+                }
+            )
+        }
+        composable("construir_mazo") {
+            ConstruirMazoScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onCrearMazo = {
+                    println("Navegar a CrearMazoScreen")
+                },
+                onMazoClick = { mazoId ->
+                    println("Click en mazo: $mazoId")
                 }
             )
         }
