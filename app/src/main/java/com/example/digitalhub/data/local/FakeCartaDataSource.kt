@@ -39,7 +39,7 @@ class FakeCartaDataSource {
                 expansion = expansiones[0],
                 esFav = false,
                 esAlt = false,
-                cantidadEnBiblioteca = 0
+                cantidadEnBiblioteca = 4
             ),
             Carta(
                 id = "BT1-009",
@@ -106,6 +106,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV3,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 3,
                 esFav = false,
                 esAlt = false
             ),
@@ -133,6 +134,7 @@ class FakeCartaDataSource {
                 nivel = Nivel.LV4,
                 expansion = expansiones[0],
                 esFav = false,
+                cantidadEnBiblioteca = 4,
                 esAlt = false
             ),
             Carta(
@@ -158,6 +160,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV4,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -171,6 +174,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV4,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -184,6 +188,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV5,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 3,
                 esFav = false,
                 esAlt = false
             ),
@@ -245,6 +250,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV6,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -258,6 +264,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.TAMER,
                 nivel = null,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -284,6 +291,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.OPTION,
                 nivel = null,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -297,6 +305,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV5,
                 expansion = expansiones[0],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -323,6 +332,7 @@ class FakeCartaDataSource {
                 tipo = TipoCarta.DIGIMON,
                 nivel = Nivel.LV4,
                 expansion = expansiones[3],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -333,9 +343,10 @@ class FakeCartaDataSource {
                 color = listOf(ColorCarta.RED),
                 coste = 8,
                 rareza = RarezaCarta.UNCOMMON,
-                tipo = TipoCarta.TAMER,
+                tipo = TipoCarta.OPTION,
                 nivel = null,
                 expansion = expansiones[3],
+                cantidadEnBiblioteca = 4,
                 esFav = false,
                 esAlt = false
             ),
@@ -351,6 +362,27 @@ class FakeCartaDataSource {
                 expansion = expansiones[0],
                 esFav = false,
                 esAlt = false
+            ),
+            Carta(
+                id = "BT2-066",
+                nombre = "Machinedramon",
+                imagenId = R.drawable.bt2066,
+                color = listOf(ColorCarta.BLACK),
+                coste = 12,
+                costeEvolucion = 4,
+                rareza = RarezaCarta.SUPER_RARE,
+                tipo = TipoCarta.DIGIMON,
+                nivel = Nivel.LV6,
+                expansion = expansiones[1],
+                esFav = true,
+                esAlt = false,
+                cantidadEnBiblioteca = 1,
+                dp = 11000,
+                rango = "Mega",
+                atributo = "Virus",
+                trait = "Machine",
+                texto = "＜Blocker＞ (This Digimon can block in the blocker timing.)\n" +
+                        "[On Play] ＜De-Digivolve 2＞ 2 of your opponent's Digimon. (Trash up to 2 cards from the top. You can't trash past level 3 cards.)"
             ),
 
         )
