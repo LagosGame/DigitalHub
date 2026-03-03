@@ -20,10 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.digitalhub.domain.model.ColorCarta
 import com.example.digitalhub.presentation.ui.state.ConstruirMazoUiState
+import com.example.digitalhub.ui.theme.Kenyan
 import com.example.digitalhub.ui.theme.Roboto
 
 @Composable
@@ -32,7 +34,6 @@ fun ConstruirMazoContenido(
     onBack:()-> Unit,
     onCrearMazo:()-> Unit,
     onMazoClick:(String)-> Unit,
-    onEditarMazo:(String)-> Unit,
     onEliminarMazo:(String)-> Unit,
 ){
     Box(
@@ -126,11 +127,15 @@ fun ConstruirMazoContenido(
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        Text(
-                                            text = mazo.nombre,
+                                        LetrasBordes(
+                                            text = "Strategies",
                                             fontSize = 18.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = colorTexto
+                                            fontFamily = Kenyan,
+                                            textColor = colorTexto,
+                                            strokeColor = Color.Black,
+                                            strokeWidth = 20f,
+                                            textAlign = TextAlign.Center
                                         )
                                         IndicadorColorMazo(mazo.colores)
                                     }
@@ -151,7 +156,7 @@ fun ConstruirMazoContenido(
                                         )
 
                                         AccionesDeck(
-                                            onEdit = { onEditarMazo(mazo.id) },
+                                            onEdit = { onMazoClick(mazo.id) },
                                             onDelete = { onEliminarMazo(mazo.id) }
                                         )
                                     }

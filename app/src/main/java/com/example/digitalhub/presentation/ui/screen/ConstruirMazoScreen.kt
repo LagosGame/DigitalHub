@@ -22,9 +22,6 @@ fun ConstruirMazoScreen(
         onBack = onBack,
         onCrearMazo = onCrearMazo,
         onMazoClick = onMazoClick,
-        onEditarMazo = { mazoId ->
-            println("Edit deck: $mazoId")
-        },
         onEliminarMazo = { mazoId ->
             viewModel.eliminarMazo(mazoId)
         }

@@ -11,6 +11,7 @@ import com.example.digitalhub.presentation.ui.screen.BibliotecaScreen
 import com.example.digitalhub.presentation.ui.screen.CartaDetalleScreen
 import com.example.digitalhub.presentation.ui.screen.ConstruirMazoScreen
 import com.example.digitalhub.presentation.ui.screen.CrearMazoScreen
+import com.example.digitalhub.presentation.ui.screen.DetalleMazoScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
@@ -101,12 +102,45 @@ fun NavegacionApp(
                     navController.navigate("crear_mazo")
                 },
                 onMazoClick = { mazoId ->
-                    println("Click en mazo: $mazoId")
+                    navController.navigate("crear_mazo?mazoId=$mazoId")
+                },
+                onEditarMazo = { mazoId ->
+                    navController.navigate("crear_mazo?mazoId=$mazoId")
                 }
             )
         }
-        composable("crear_mazo") {
+        composable(
+            route = "crear_mazo?mazoId={mazoId}",
+            arguments = listOf(
+                navArgument("mazoId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val mazoId = backStackEntry.arguments?.getString("mazoId")
+
             CrearMazoScreen(
+                mazoId = mazoId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onNavToDetalle = { id ->
+                    navController.navigate("detalle_mazo/$id")
+                }
+            )
+        }
+        composable(
+            route = "detalle_mazo/{mazoId}",
+            arguments = listOf(
+                navArgument("mazoId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val mazoId = backStackEntry.arguments?.getString("mazoId") ?: ""
+
+            DetalleMazoScreen(
+                mazoId = mazoId,
                 onBack = {
                     navController.popBackStack()
                 }

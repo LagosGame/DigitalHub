@@ -9,6 +9,7 @@ import com.example.digitalhub.domain.model.Mazo
 import com.example.digitalhub.domain.model.TipoCarta
 import com.example.digitalhub.domain.usecase.CrearMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
+import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
 import com.example.digitalhub.presentation.ui.state.CrearMazoUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,9 @@ import kotlinx.coroutines.launch
 
 class CrearMazoViewModel(
     private val getCartasUseCase: GetCartasUseCase,
-    private val crearMazoUseCase: CrearMazoUseCase
+    private val crearMazoUseCase: CrearMazoUseCase,
+    private val getMazoByIdUseCase: GetMazoByIdUseCase,
+    private val mazoIdInicial: String? = null
 ): ViewModel()
 {
     private val _uiState = MutableStateFlow(CrearMazoUiState())
@@ -25,8 +28,67 @@ class CrearMazoViewModel(
 
     init {
         fetchBiblioteca()
+        if (mazoIdInicial != null) {
+            cargarMazoExistente(mazoIdInicial)
+        }
     }
 
+    private fun cargarMazoExistente(mazoId: String) {
+        viewModelScope.launch {
+            try {
+                val mazo = getMazoByIdUseCase(mazoId)
+
+                if (mazo != null) {
+                    println(mazo.nombre)
+                    println(mazo.cartas.size)
+                    println(mazo.cartasNormales)
+                    println(mazo.cartasHuevo)
+
+                    kotlinx.coroutines.delay(500)
+
+
+                    val cartasNormales = mazo.cartas.filter { cartaEnMazo ->
+                        val carta = _uiState.value.cartasBiblioteca.find { it.id == cartaEnMazo.cartaId }
+                        carta?.tipo != TipoCarta.DIGIEGG
+                    }
+
+                    val cartasHuevo = mazo.cartas.filter { cartaEnMazo ->
+                        val carta = _uiState.value.cartasBiblioteca.find { it.id == cartaEnMazo.cartaId }
+                        carta?.tipo == TipoCarta.DIGIEGG
+                    }
+
+
+                    val totalNormales = cartasNormales.sumOf { it.cantidad }
+                    val totalHuevo = cartasHuevo.sumOf { it.cantidad }
+
+                    println("${cartasNormales.size} (Total: $totalNormales)")
+                    println("${cartasHuevo.size} (Total: $totalHuevo)")
+
+
+                    val cartaPortada = _uiState.value.cartasBiblioteca.find { carta ->
+                        carta.imagenId == mazo.portadaId
+                    }
+
+                    _uiState.update {
+                        it.copy(
+                            mazoId = mazo.id,
+                            nombreMazo = mazo.nombre,
+                            cartasNormales = cartasNormales,
+                            cartasHuevo = cartasHuevo,
+                            totalNormales = totalNormales,
+                            totalHuevo = totalHuevo,
+                            cartaIdPortada = cartaPortada?.id
+                        )
+                    }
+                } else {
+                    println("Deck not found: $mazoId")
+                }
+            } catch (e: Exception) {
+                println("Error : ${e.message}")
+                e.printStackTrace()
+            }
+        }
+    }
 
     private fun fetchBiblioteca(){
         viewModelScope.launch {
@@ -192,14 +254,18 @@ class CrearMazoViewModel(
                 val portada = _uiState.value.cartasBiblioteca.find { it.id == cartaPortadaId }
 
                 val mazo = Mazo(
-                    id = System.currentTimeMillis().toString(),
+                    id = _uiState.value.mazoId,
                     nombre = _uiState.value.nombreMazo,
                     colores = colores,
                     cartasNormales = _uiState.value.totalNormales,
                     cartasHuevo = _uiState.value.totalHuevo,
                     portadaId = portada?.imagenId ?: R.drawable.bt1025,
                     tags = emptyList(),
-                    cartas = _uiState.value.cartasNormales + _uiState.value.cartasHuevo
+                    cartas = _uiState.value.cartasNormales + _uiState.value.cartasHuevo,
+                    descripcion = "",
+                    estrategias = emptyList(),
+                    cartasImportantes = emptyList(),
+                    estadisticas = com.example.digitalhub.domain.model.Estadisticas()
                 )
                 crearMazoUseCase(mazo)
                 onSuccess()

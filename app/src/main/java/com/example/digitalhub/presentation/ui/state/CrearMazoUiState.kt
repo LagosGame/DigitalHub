@@ -15,5 +15,7 @@ data class CrearMazoUiState(
     // Bibliotecs//
 
     val cartasBiblioteca: List<Carta> = emptyList(),
-    val isLoadingBiblioteca : Boolean = false
+    val isLoadingBiblioteca : Boolean = false,
+
+    val mazoId: String = System.currentTimeMillis().toString()
 )

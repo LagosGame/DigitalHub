@@ -45,12 +45,14 @@ fun ZonaMazo(
     onGuardar: () -> Unit,
     onLimpiar: () -> Unit,
     onElegirPortada: () -> Unit,
+    onNavToDetalle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Color.White)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -140,8 +142,15 @@ fun ZonaMazo(
                     Icon(Icons.Default.Favorite, null, tint = Color.Red)
                 }
 
-                IconButton(onClick = {}) {
-                    Icon(Icons.Default.Info, null)
+                IconButton(
+                    onClick = onNavToDetalle,
+                    enabled = cartasDelMazo.isNotEmpty()
+                ) {
+                    Icon(
+                        Icons.Default.Info,
+                        "Guías y estrategias",
+                        tint = if (cartasDelMazo.isNotEmpty()) Color.Blue else Color.Gray
+                    )
                 }
 
                 // Portada
@@ -180,3 +189,4 @@ fun ZonaMazo(
       }
     }
 }
+

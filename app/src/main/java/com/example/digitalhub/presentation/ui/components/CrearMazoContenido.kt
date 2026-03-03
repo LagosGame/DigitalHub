@@ -21,7 +21,8 @@ fun CrearMazoContentido(
     onLimpiar: () -> Unit,
     onAbrirDialogoPortada: () -> Unit,
     onCerrarDialogoPortada: () -> Unit,
-    onEstablecerPortada: (String) -> Unit
+    onEstablecerPortada: (String) -> Unit,
+    onNavToDetalle: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ZonaMazo(
@@ -34,6 +35,7 @@ fun CrearMazoContentido(
             onGuardar = onGuardar,
             onLimpiar = onLimpiar,
             onElegirPortada = onAbrirDialogoPortada,
+            onNavToDetalle = onNavToDetalle,
             modifier = Modifier.weight(1f)
         )
 

@@ -12,8 +12,11 @@ import com.example.digitalhub.presentation.viewmodel.CrearMazoViewModel
 
 @Composable
 fun CrearMazoScreen(
-    viewModel: CrearMazoViewModel = viewModel(factory = CrearMazoViewModelFactory()),
-    onBack: () -> Unit
+    mazoId: String? = null,
+    viewModel: CrearMazoViewModel
+    = viewModel(factory = CrearMazoViewModelFactory(mazoId)),
+    onBack: () -> Unit,
+    onNavToDetalle: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val mostrarDialogoPortada by viewModel.mostrarDialogoPortada.collectAsStateWithLifecycle()
@@ -61,6 +64,9 @@ fun CrearMazoScreen(
         onLimpiar = viewModel::limpiarMazo,
         onAbrirDialogoPortada = viewModel::abrirDialogoPortada,
         onCerrarDialogoPortada = viewModel::cerrarDialogoPortada,
-        onEstablecerPortada = viewModel::establecerPortada
+        onEstablecerPortada = viewModel::establecerPortada,
+        onNavToDetalle = {
+                onNavToDetalle(uiState.mazoId)
+        }
     )
 }
