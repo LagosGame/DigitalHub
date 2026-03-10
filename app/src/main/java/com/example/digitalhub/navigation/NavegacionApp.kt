@@ -12,6 +12,7 @@ import com.example.digitalhub.presentation.ui.screen.CartaDetalleScreen
 import com.example.digitalhub.presentation.ui.screen.ConstruirMazoScreen
 import com.example.digitalhub.presentation.ui.screen.CrearMazoScreen
 import com.example.digitalhub.presentation.ui.screen.DetalleMazoScreen
+import com.example.digitalhub.presentation.ui.screen.ListaMazosScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
@@ -61,8 +62,7 @@ fun NavegacionApp(
                     navController.navigate("construir_mazo")
                 },
                 onLista = {
-                    println("Navegar a Lista de mazos")
-                    // TODO: navController.navigate("lista")
+                    navController.navigate("lista_mazos")
                 },
                 onPerfil = {
                     println("Navegar a Perfil")
@@ -103,9 +103,6 @@ fun NavegacionApp(
                 },
                 onMazoClick = { mazoId ->
                     navController.navigate("crear_mazo?mazoId=$mazoId")
-                },
-                onEditarMazo = { mazoId ->
-                    navController.navigate("crear_mazo?mazoId=$mazoId")
                 }
             )
         }
@@ -143,6 +140,20 @@ fun NavegacionApp(
                 mazoId = mazoId,
                 onBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable("lista_mazos") {
+            ListaMazosScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onMetaClick = {
+                },
+                onMazoClick = {
+                },
+                onPerfilClick = { autorId ->
+                    println("👤 Ver perfil: $autorId")
                 }
             )
         }

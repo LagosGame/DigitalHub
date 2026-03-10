@@ -18,6 +18,8 @@ class FakeMazoDataSource {
             cartasHuevo = 5,
             portadaId = R.drawable.bt1025,  // WarGreymon
             tags = listOf("Aggro", "Tribal", "Meta"),
+            esFavorito = true,
+            autorId = "user123",
             cartas = listOf(
 
                 CartaEnMazo("BT1-001", 3),

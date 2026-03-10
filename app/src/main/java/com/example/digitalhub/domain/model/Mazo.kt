@@ -9,12 +9,15 @@ data class Mazo(
     val portadaId: Int,
     val tags: List<String> = emptyList(),
     val cartas: List<CartaEnMazo> = emptyList(),
+    val esFavorito : Boolean = false,
+    val autorId : String = "",
 
     //para detalles//
     val descripcion: String = "",
     val estrategias: List<Estrategia> = emptyList(),
     val cartasImportantes: List<String> = emptyList(),
     val estadisticas: Estadisticas = Estadisticas()
+
 )
 data class CartaEnMazo(
     val cartaId: String,

@@ -11,15 +11,15 @@ fun IndicadorColorMazo(colores: List<ColorCarta>) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         when {
             colores.isEmpty() -> {
-                ColorPunto(ColorCarta.RAINBOW)
+                ColorPuntoConLetra(ColorCarta.RAINBOW)
             }
             colores.size == 1 -> {
-                ColorPunto(colores.first())
+                ColorPuntoConLetra(colores.first())
             }
             colores.size == 2 -> {
-                colores.forEach { ColorPunto(it) }
+                colores.forEach { ColorPuntoConLetra(it)}
             }
-            colores.size >= 3 -> {
+            else -> {
                 Arcoiris()
             }
         }

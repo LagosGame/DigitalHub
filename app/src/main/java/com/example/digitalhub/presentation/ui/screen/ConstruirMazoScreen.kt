@@ -16,14 +16,16 @@ fun ConstruirMazoScreen(
     onMazoClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val mazoAEliminar by viewModel.mazoAEliminar.collectAsStateWithLifecycle()
 
     ConstruirMazoContenido(
         uiState = uiState,
+        mazoAEliminar= mazoAEliminar,
         onBack = onBack,
         onCrearMazo = onCrearMazo,
         onMazoClick = onMazoClick,
-        onEliminarMazo = { mazoId ->
-            viewModel.eliminarMazo(mazoId)
-        }
+        onEliminarMazo = viewModel::mostrarDialogoEliminar,
+        onConfirmarEliminacion = viewModel::confirmarEliminacion,
+        onCancelarEliminacion = viewModel::ocultarDialogoEliminar
     )
 }

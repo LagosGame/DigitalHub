@@ -9,6 +9,7 @@ import com.example.digitalhub.domain.repository.MazoRepositoryImpl
 import com.example.digitalhub.domain.usecase.CrearMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
 import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
+import com.example.digitalhub.domain.usecase.ToggleFavMazoUseCase
 import com.example.digitalhub.presentation.viewmodel.CrearMazoViewModel
 
 class CrearMazoViewModelFactory(private val mazoId: String? = null) : ViewModelProvider.Factory {
@@ -23,12 +24,14 @@ class CrearMazoViewModelFactory(private val mazoId: String? = null) : ViewModelP
             val mazoRepository = MazoRepositoryImpl(fakeMazoDataSource)
             val crearMazoUseCase = CrearMazoUseCase(mazoRepository)
             val getMazoByIdUseCase = GetMazoByIdUseCase(mazoRepository)
+            val toggleFavoritoMazoUseCase = ToggleFavMazoUseCase(mazoRepository)
 
             @Suppress("UNCHECKED_CAST")
             return CrearMazoViewModel(
                 getCartasUseCase = getCartasUseCase,
                 crearMazoUseCase = crearMazoUseCase,
                 getMazoByIdUseCase = getMazoByIdUseCase,
+                toggleFavMazoUseCase= toggleFavoritoMazoUseCase,
                 mazoIdInicial = mazoId
             ) as T
         }

@@ -1,56 +1,53 @@
 package com.example.digitalhub.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.digitalhub.domain.usecase.EliminarMazoUseCase
-import com.example.digitalhub.domain.usecase.GetCartasUseCase
 import com.example.digitalhub.domain.usecase.GetMazosUseCase
-import com.example.digitalhub.presentation.ui.state.ConstruirMazoUiState
+import androidx.lifecycle.viewModelScope
+import com.example.digitalhub.domain.usecase.GetCartasUseCase
+import com.example.digitalhub.presentation.ui.state.ListaMazosUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ConstruirMazoViewModel(
+class ListaMazosViewModel(
     private val getMazosUseCase: GetMazosUseCase,
-    private val eliminarMazoUseCase: EliminarMazoUseCase,
     private val getCartasUseCase: GetCartasUseCase
-): ViewModel()
-{
-    private val _uiState = MutableStateFlow(ConstruirMazoUiState())
+): ViewModel() {
+    private val _uiState = MutableStateFlow(ListaMazosUiState())
     val uiState = _uiState.asStateFlow()
 
-//PARA EL DIALOGO
-    private val _mazoAEliminar = MutableStateFlow<String?>(null)
-    val mazoAEliminar = _mazoAEliminar.asStateFlow()
-
+    private val _mazoACopiar = MutableStateFlow<String?>(null)
+    val mazoACopiar = _mazoACopiar.asStateFlow()
 
     init {
-        fetchMazos()
-        fetchCartas()
+        cargarMazos()
+        cargarCartas()
     }
-    fun fetchMazos(){
+
+    private fun cargarMazos() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+
             try {
-                val mazos = getMazosUseCase()
+                val todosMazos = getMazosUseCase()
                 _uiState.update {
                     it.copy(
-                        mazos = mazos,
+                        mazos = todosMazos,
                         isLoading = false
                     )
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "Error fetching decks: ${e.message}"
+                        errorMessage = "Error loading decks: ${e.message}"
                     )
                 }
             }
         }
     }
-    private fun fetchCartas() {
+    private fun cargarCartas() {
         viewModelScope.launch {
             try {
                 val cartas = getCartasUseCase()
@@ -61,24 +58,26 @@ class ConstruirMazoViewModel(
         }
     }
 
-    fun mostrarDialogoEliminar(mazoId: String) {
-        _mazoAEliminar.value = mazoId
+    fun actualizarBusqueda(texto: String) {
+        _uiState.update { it.copy(busqueda = texto) }
     }
 
-    fun ocultarDialogoEliminar() {
-        _mazoAEliminar.value = null
+    fun mostrarDialogoCopiar(mazoId: String) {
+        _mazoACopiar.value = mazoId
     }
-    fun confirmarEliminacion() {
-        val mazoId = _mazoAEliminar.value ?: return
+
+    fun ocultarDialogoCopiar() {
+        _mazoACopiar.value = null
+    }
+
+    fun confirmarCopia() {
+        val mazoId = _mazoACopiar.value ?: return
         viewModelScope.launch {
             try {
-                eliminarMazoUseCase(mazoId)
-                ocultarDialogoEliminar()
-                fetchMazos()
+                println(" Deck copy: $mazoId")
+                ocultarDialogoCopiar()
             } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(errorMessage = "Error trying to delete the deck: ${e.message}")
-                }
+                println("Error copying deck: ${e.message}")
             }
         }
     }

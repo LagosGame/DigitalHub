@@ -11,6 +11,7 @@ data class CrearMazoUiState(
     val totalHuevo: Int = 0,
     val cartaIdPortada : String? ="",
     val errorMessage: String? = null,
+    val esFavorito: Boolean = false,
 
     // Bibliotecs//
 

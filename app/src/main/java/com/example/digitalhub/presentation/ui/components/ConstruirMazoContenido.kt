@@ -1,5 +1,7 @@
 package com.example.digitalhub.presentation.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,10 +12,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,8 +40,11 @@ fun ConstruirMazoContenido(
     uiState: ConstruirMazoUiState,
     onBack:()-> Unit,
     onCrearMazo:()-> Unit,
+    mazoAEliminar: String?,
     onMazoClick:(String)-> Unit,
     onEliminarMazo:(String)-> Unit,
+    onConfirmarEliminacion: () -> Unit,
+    onCancelarEliminacion: () -> Unit
 ){
     Box(
         modifier = Modifier.fillMaxSize()
@@ -127,8 +137,12 @@ fun ConstruirMazoContenido(
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        ) {
                                         LetrasBordes(
-                                            text = "Strategies",
+                                            text = mazo.nombre,
                                             fontSize = 18.sp,
                                             fontWeight = FontWeight.Bold,
                                             fontFamily = Kenyan,
@@ -137,6 +151,20 @@ fun ConstruirMazoContenido(
                                             strokeWidth = 20f,
                                             textAlign = TextAlign.Center
                                         )
+                                            if (mazo.esFavorito) {
+                                                Icon(
+                                                    Icons.Default.Favorite,
+                                                    contentDescription = "Favorito",
+                                                    tint = Color.Red,
+                                                    modifier = Modifier
+                                                        .padding(top = 8.dp, end = 8.dp)
+                                                        .size(32.dp)
+                                                        .border(2.dp, Color.Black, CircleShape)
+                                                        .background(Color.White, CircleShape)
+                                                        .padding(4.dp)
+                                                )
+                                            }
+                                        }
                                         IndicadorColorMazo(mazo.colores)
                                     }
 
@@ -160,7 +188,22 @@ fun ConstruirMazoContenido(
                                             onDelete = { onEliminarMazo(mazo.id) }
                                         )
                                     }
+                                    //mensahe
+                                    if (mazoAEliminar != null) {
+                                        val mazo = uiState.mazos.find { it.id == mazoAEliminar }
+                                        if (mazo != null) {
+                                            val cartasDelMazo = uiState.todasLasCartas?.filter { carta ->
+                                                mazo.cartas.any { it.cartaId == carta.id }
+                                            } ?: emptyList()
 
+                                            DialogoEliminarMazo(
+                                                mazo = mazo,
+                                                cartasDelMazo = cartasDelMazo,
+                                                onConfirmar = onConfirmarEliminacion,
+                                                onCancelar = onCancelarEliminacion
+                                            )
+                                        }
+                                    }
                                     //Tags
                                     if (mazo.tags.isNotEmpty()) {
                                         Row(

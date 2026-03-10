@@ -10,6 +10,7 @@ import com.example.digitalhub.domain.model.TipoCarta
 import com.example.digitalhub.domain.usecase.CrearMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
 import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
+import com.example.digitalhub.domain.usecase.ToggleFavMazoUseCase
 import com.example.digitalhub.presentation.ui.state.CrearMazoUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,7 @@ class CrearMazoViewModel(
     private val getCartasUseCase: GetCartasUseCase,
     private val crearMazoUseCase: CrearMazoUseCase,
     private val getMazoByIdUseCase: GetMazoByIdUseCase,
+    private val toggleFavMazoUseCase: ToggleFavMazoUseCase,
     private val mazoIdInicial: String? = null
 ): ViewModel()
 {
@@ -77,7 +79,8 @@ class CrearMazoViewModel(
                             cartasHuevo = cartasHuevo,
                             totalNormales = totalNormales,
                             totalHuevo = totalHuevo,
-                            cartaIdPortada = cartaPortada?.id
+                            cartaIdPortada = cartaPortada?.id,
+                            esFavorito = mazo.esFavorito
                         )
                     }
                 } else {
@@ -221,6 +224,23 @@ class CrearMazoViewModel(
         }
     }
 
+    fun toggleFavorito() {
+        viewModelScope.launch {
+            try {
+                toggleFavMazoUseCase(_uiState.value.mazoId)
+
+                // Recargar mazo para actualizar estado
+                val mazo = getMazoByIdUseCase(_uiState.value.mazoId)
+                if (mazo != null) {
+                    _uiState.update { it.copy(esFavorito = mazo.esFavorito) }
+                }
+            } catch (e: Exception) {
+                println("Error toggle fav: ${e.message}")
+            }
+        }
+    }
+
+
     fun copiasEnMazo(cartaId : String): Int{
         val normales = _uiState.value.cartasNormales.firstOrNull { it.cartaId == cartaId}?.cantidad ?: 0
         val huevos = _uiState.value.cartasHuevo.firstOrNull { it.cartaId == cartaId}?.cantidad ?: 0
@@ -260,6 +280,7 @@ class CrearMazoViewModel(
                     cartasNormales = _uiState.value.totalNormales,
                     cartasHuevo = _uiState.value.totalHuevo,
                     portadaId = portada?.imagenId ?: R.drawable.bt1025,
+                    esFavorito = _uiState.value.esFavorito,
                     tags = emptyList(),
                     cartas = _uiState.value.cartasNormales + _uiState.value.cartasHuevo,
                     descripcion = "",

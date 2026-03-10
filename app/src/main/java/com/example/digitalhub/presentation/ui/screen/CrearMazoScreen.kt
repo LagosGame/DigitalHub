@@ -65,6 +65,7 @@ fun CrearMazoScreen(
         onAbrirDialogoPortada = viewModel::abrirDialogoPortada,
         onCerrarDialogoPortada = viewModel::cerrarDialogoPortada,
         onEstablecerPortada = viewModel::establecerPortada,
+        onToggleFavorito = viewModel::toggleFavorito,
         onNavToDetalle = {
                 onNavToDetalle(uiState.mazoId)
         }

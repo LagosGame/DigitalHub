@@ -46,6 +46,7 @@ fun ZonaMazo(
     onLimpiar: () -> Unit,
     onElegirPortada: () -> Unit,
     onNavToDetalle: () -> Unit,
+    onToggleFavorito:()->Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -138,7 +139,7 @@ fun ZonaMazo(
                     texto = "Save"
                 )
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = onToggleFavorito) {
                     Icon(Icons.Default.Favorite, null, tint = Color.Red)
                 }
 
