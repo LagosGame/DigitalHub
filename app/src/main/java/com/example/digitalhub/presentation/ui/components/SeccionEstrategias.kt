@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -37,6 +38,7 @@ fun SeccionEstrategias(
     todasLasCartas: List<Carta>,
     onAñadir: () -> Unit,
     onEliminar: (Int) -> Unit,
+    readOnly: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -57,8 +59,14 @@ fun SeccionEstrategias(
                 textAlign = TextAlign.Center
             )
 
-            IconButton(onClick = onAñadir) {
-                Icon(Icons.Default.Add, "Añadir", tint = Color.White)
+            if (!readOnly) {
+                IconButton(onClick = onAñadir) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = "Add",
+                        tint = Color.White
+                    )
+                }
             }
         }
 
@@ -96,7 +104,8 @@ fun SeccionEstrategias(
 private fun EstrategiaItem(
     estrategia: Estrategia,
     cartas: List<Carta>,
-    onEliminar: () -> Unit
+    onEliminar: () -> Unit,
+    readOnly: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -116,8 +125,14 @@ private fun EstrategiaItem(
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
-            IconButton(onClick = onEliminar) {
-                Icon(Icons.Default.Delete, "Eliminar", tint = Color.Red)
+            if (!readOnly) {
+                IconButton(onClick = onEliminar) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = "Add",
+                        tint = Color.White
+                    )
+                }
             }
         }
         LazyRow(

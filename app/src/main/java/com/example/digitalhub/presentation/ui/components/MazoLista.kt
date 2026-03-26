@@ -96,7 +96,7 @@ fun CardMazoLista(
 
                     Text(
                         text = "${mazo.cartasNormales}+${mazo.cartasHuevo}/${50}+${5}",
-                        fontSize = 14.sp,
+                        fontSize = 28.sp,
                         color = colorTexto
                     )
 
@@ -128,19 +128,23 @@ fun CardMazoLista(
 
                         IconButton(
                             onClick = onPerfilClick,
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier
+                                .size(60.dp)
+                                .border(2.dp, Color.Black, CircleShape)
+                                .background(Color(0xFFFFEB3B), CircleShape)  // Amarillo plátano
                         ) {
                             Icon(
                                 Icons.Default.Person,
-                                contentDescription = "Ver perfil",
-                                tint = colorTexto
+                                contentDescription = "Perfil del autor",
+                                tint = Color.Black,
+                                modifier = Modifier.size(40.dp)
                             )
                         }
 
 
                         IconButton(
                             onClick = onCopiarClick,
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(90.dp)
                         ) {
                             Icon(
                                 Icons.Default.Search,

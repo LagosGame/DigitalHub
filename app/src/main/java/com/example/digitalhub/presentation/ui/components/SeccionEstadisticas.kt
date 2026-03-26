@@ -28,6 +28,7 @@ import com.example.digitalhub.ui.theme.Kenyan
 fun SeccionEstadisticas(
     estadisticas: EstadisticasEdit,
     onEdit: () -> Unit,
+    readOnly: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -46,8 +47,14 @@ fun SeccionEstadisticas(
                 strokeWidth = 20f,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = onEdit) {
-                Icon(Icons.Default.Edit, "Editar", tint = Color.White)
+            if (!readOnly) {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        Icons.Default.Edit,
+                        contentDescription = "Edit",
+                        tint = Color.White
+                    )
+                }
             }
         }
 

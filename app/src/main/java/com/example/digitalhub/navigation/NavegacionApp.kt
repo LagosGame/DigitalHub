@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.digitalhub.presentation.ui.screen.BibliotecaScreen
 import com.example.digitalhub.presentation.ui.screen.CartaDetalleScreen
+import com.example.digitalhub.presentation.ui.screen.ComentariosScreen
 import com.example.digitalhub.presentation.ui.screen.ConstruirMazoScreen
 import com.example.digitalhub.presentation.ui.screen.CrearMazoScreen
 import com.example.digitalhub.presentation.ui.screen.DetalleMazoScreen
@@ -16,6 +17,8 @@ import com.example.digitalhub.presentation.ui.screen.ListaMazosScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
+import com.example.digitalhub.presentation.ui.screen.TierListScreen
+import com.example.digitalhub.presentation.ui.screen.VerMazoScreen
 
 @Composable
 fun NavegacionApp(
@@ -149,11 +152,55 @@ fun NavegacionApp(
                     navController.popBackStack()
                 },
                 onMetaClick = {
+                    navController.navigate("tier_list")
                 },
-                onMazoClick = {
+                onMazoClick = { mazoId ->
+                    navController.navigate("ver_mazo/$mazoId")
                 },
                 onPerfilClick = { autorId ->
-                    println("👤 Ver perfil: $autorId")
+                    println("Ver perfil: $autorId")
+                }
+            )
+        }
+        composable("tier_list") {
+            TierListScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(
+            route = "ver_mazo/{mazoId}",
+            arguments = listOf(navArgument("mazoId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val mazoId = backStackEntry.arguments?.getString("mazoId") ?: ""
+
+            VerMazoScreen(
+                mazoId = mazoId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onPerfilAutor = {
+                    println("👤 Ver perfil")
+                },
+                onComentariosClick = {
+                    navController.navigate("comentarios/$mazoId")
+                }
+            )
+        }
+        composable(
+            route = "comentarios/{mazoId}",
+            arguments = listOf(navArgument("mazoId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val mazoId = backStackEntry.arguments?.getString("mazoId") ?: ""
+
+            ComentariosScreen(
+                mazoId = mazoId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onPerfilClick = {
+                    println("👤 Ver perfil")
                 }
             )
         }

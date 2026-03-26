@@ -196,14 +196,14 @@ fun DialogoCopiarMazo(
         confirmButton = {
             BotonMazo(
                 tipo = TipoBoton.EDITAR,
-                texto = "Copiar",
+                texto = "Copy",
                 onClick = onConfirmar
             )
         },
         dismissButton = {
             BotonMazo(
                 tipo = TipoBoton.CANCELAR,
-                texto = "Cancelar",
+                texto = "Cancel",
                 onClick = onCancelar
             )
         },

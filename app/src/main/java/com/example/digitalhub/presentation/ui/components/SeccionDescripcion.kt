@@ -27,6 +27,7 @@ fun SeccionDescripcion(
     titulo: String,
     contenido: String,
     onEdit: () -> Unit,
+    readOnly: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -44,12 +45,14 @@ fun SeccionDescripcion(
                 strokeWidth = 20f,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = onEdit) {
-                Icon(
-                    Icons.Default.Edit,
-                    contentDescription = "Edit",
-                    tint = Color.White
-                )
+            if (!readOnly) {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        Icons.Default.Edit,
+                        contentDescription = "Edit",
+                        tint = Color.White
+                    )
+                }
             }
         }
 
