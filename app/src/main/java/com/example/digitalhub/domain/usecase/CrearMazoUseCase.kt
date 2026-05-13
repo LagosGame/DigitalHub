@@ -6,7 +6,12 @@ import com.example.digitalhub.domain.repository.MazoRpository
 class CrearMazoUseCase(
     private val repository: MazoRpository
 ) {
-    suspend operator fun invoke(mazo: Mazo){
-        repository.crearMazo(mazo)
+    suspend operator fun invoke(mazo: Mazo): Result<Unit> {
+        return try {
+            repository.crearMazo(mazo)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

@@ -5,8 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,7 +40,7 @@ fun TierListContentido(
                     .fillMaxWidth()
                     .background(Color(0xFFFFD700))
                     .border(4.dp, Color.Black)
-                    .padding(16.dp),
+                    .padding(16.dp, top = 80.dp),
                 contentAlignment = Alignment.Center
             ) {
                 LetrasBordes(
@@ -52,6 +54,8 @@ fun TierListContentido(
                     textAlign = TextAlign.Center
                 )
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(
                 modifier = Modifier

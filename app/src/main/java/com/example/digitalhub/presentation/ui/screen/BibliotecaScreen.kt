@@ -1,6 +1,7 @@
 package com.example.digitalhub.presentation.ui.screen
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,6 +17,10 @@ fun BibliotecaScreen(
     onCartaClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.recargarBiblioteca()
+    }
 
     BibliotecaContentido(
         uiState = uiState,

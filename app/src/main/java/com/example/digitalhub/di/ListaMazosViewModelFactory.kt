@@ -4,25 +4,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.digitalhub.data.local.FakeCartaDataSource
 import com.example.digitalhub.data.local.FakeMazoDataSource
+import com.example.digitalhub.data.repository.MazoRepositoryFirestoreImpl
+import com.example.digitalhub.domain.repository.AutentificacionRepositoryImpl
 import com.example.digitalhub.domain.repository.CartaRepositoryImpl
-import com.example.digitalhub.domain.repository.MazoRepositoryImpl
+import com.example.digitalhub.domain.repository.UserRepositoryImpl
+import com.example.digitalhub.domain.usecase.CrearMazoUseCase
+import com.example.digitalhub.domain.usecase.GetAllMazosUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
+import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
 import com.example.digitalhub.domain.usecase.GetMazosUseCase
+import com.example.digitalhub.domain.usecase.GetUserByIdUseCase
 import com.example.digitalhub.presentation.viewmodel.ListaMazosViewModel
+import com.google.android.play.integrity.internal.u
 
 class ListaMazosViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ListaMazosViewModel::class.java)) {
-            val dataSource = FakeMazoDataSource()
-            val repository = MazoRepositoryImpl(dataSource)
-            val useCase = GetMazosUseCase(repository)
+            val mazoRepository = MazoRepositoryFirestoreImpl()
+            val authRepository = AutentificacionRepositoryImpl()
+            val userRepository = UserRepositoryImpl()
+            val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository, authRepository)
+            val getUserByIdUseCase = GetUserByIdUseCase(userRepository)
+
+            val getAllMazosUseCase = GetAllMazosUseCase(mazoRepository)
+            val createMazoUseCase = CrearMazoUseCase(mazoRepository)
+
             val cartaDataSource = FakeCartaDataSource()
             val cartaRepository = CartaRepositoryImpl(cartaDataSource)
             val getCartasUseCase = GetCartasUseCase(cartaRepository)
 
+
             @Suppress("UNCHECKED_CAST")
-            return ListaMazosViewModel(useCase,
-                getCartasUseCase = getCartasUseCase) as T
+            return ListaMazosViewModel(
+                getAllMazosUseCase = getAllMazosUseCase,
+                getCartasUseCase = getCartasUseCase,
+                getCurrentUserUseCase = getCurrentUserUseCase,
+                getUserByIdUseCase = getUserByIdUseCase,
+                createMazoUseCase = createMazoUseCase
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -108,7 +108,8 @@ fun DialogoCopiarMazo(
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             CartaPreviewDeck(
-                                imagenId = mazo.portadaId,
+                                portadaId = mazo.portadaId,
+                                cartas = cartasDelMazo ,
                                 borderColor = estilo.borde
                             )
 
@@ -185,7 +186,8 @@ fun DialogoCopiarMazo(
                     ) {
                         items(cartasDelMazo.take(12)) { carta ->
                             CartaPreviewDeck(
-                                imagenId = carta.imagenId,
+                                portadaId = carta.id,
+                                cartas = cartasDelMazo ,
                                 borderColor = Color.White
                             )
                         }

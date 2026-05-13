@@ -1,5 +1,6 @@
 package com.example.digitalhub.presentation.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,7 +32,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,39 +111,63 @@ fun ComentariosScreen(
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
-                                .background(Color(0xFFFFEB3B), CircleShape)
+                                .clip(CircleShape)
                                 .border(2.dp, Color.Black, CircleShape)
-                                .clickable { onPerfilClick(mazo.autorId) }
-                        )
+                                .clickable { onPerfilClick(mazo.userId) }
+                        ) {
+                            val usuarioMazo = uiState.usuarios[mazo.userId]
+
+                            if (usuarioMazo?.iconoId != null && usuarioMazo.iconoId != 0) {
+                                Image(
+                                    painter = painterResource(id = usuarioMazo.iconoId),
+                                    contentDescription = "Avatar del autor",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Color(0xFFFFEB3B)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Person,
+                                        contentDescription = "Default Avatar",
+                                        tint = Color.Black
+                                    )
+                                }
+                            }
+                        }
 
                         BotonX(onBack)
                     }
 
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(uiState.comentarios) { comentario ->
-                            ComentarioItem(
-                                comentario = comentario,
-                                usuarioActualId = viewModel.uiState.value.mazo?.autorId ?: "",
-                                onLikeClick = { viewModel.toggleLike(it) },
-                                onResponderClick = { viewModel.responderComentario(it) },
-                                onPerfilClick = onPerfilClick
-                            )
-                        }
-                    }
 
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(uiState.comentarios) { comentario ->
+                                ComentarioItem(
+                                    comentario = comentario,
+                                    usuarioActualId = uiState.currentUserId,
+                                    onLikeClick = { viewModel.toggleLike(it) },
+                                    onResponderClick = { viewModel.responderComentario(it) },
+                                    onPerfilClick = onPerfilClick
+                                )
+                            }
+                        }
+
+
                         FloatingActionButton(
                             onClick = { viewModel.abrirDialogoComentar() },
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(16.dp),
                             containerColor = Color(0xFF1565C0)
                         ) {
                             Icon(
@@ -148,26 +177,26 @@ fun ComentariosScreen(
                             )
                         }
                     }
+                }
 
-                    if (uiState.mostrarDialogoComentar) {
-                        DialogoCOmentar(
-                            titulo = "New Comment",
-                            textoComentario = uiState.nuevoComentario,
-                            onTextoChange = viewModel::actualizarTextoComentario,
-                            onPublicar = viewModel::enviarComentario,
-                            onCancelar = viewModel::cerrarDialogos
-                        )
-                    }
+                if (uiState.mostrarDialogoComentar) {
+                    DialogoCOmentar(
+                        titulo = "New Comment",
+                        textoComentario = uiState.nuevoComentario,
+                        onTextoChange = viewModel::actualizarTextoComentario,
+                        onPublicar = viewModel::enviarComentario,
+                        onCancelar = viewModel::cerrarDialogos
+                    )
+                }
 
-                    if (uiState.mostrarDialogoResponder) {
-                        DialogoCOmentar(
-                            titulo = "Respond",
-                            textoComentario = uiState.nuevoComentario,
-                            onTextoChange = viewModel::actualizarTextoComentario,
-                            onPublicar = viewModel::enviarComentario,
-                            onCancelar = viewModel::cerrarDialogos
-                        )
-                    }
+                if (uiState.mostrarDialogoResponder) {
+                    DialogoCOmentar(
+                        titulo = "Respond",
+                        textoComentario = uiState.nuevoComentario,
+                        onTextoChange = viewModel::actualizarTextoComentario,
+                        onPublicar = viewModel::enviarComentario,
+                        onCancelar = viewModel::cerrarDialogos
+                    )
                 }
             }
         }

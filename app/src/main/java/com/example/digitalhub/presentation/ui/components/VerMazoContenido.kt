@@ -77,8 +77,9 @@ fun VerMazoContentido(
                         mazo = mazo,
                         cartasDelMazo = cartasDelMazo,
                         onBack = onBack,
+                        usuario = uiState.usuario,
                         onAbrirDialogoCopiar = onAbrirDialogoCopiar,
-                        onPerfilAutor = { onPerfilAutor(mazo.autorId) }
+                        onPerfilAutor = { onPerfilAutor(mazo.userId) }
                     )
                     Box(
                         modifier = Modifier

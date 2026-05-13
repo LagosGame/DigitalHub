@@ -15,12 +15,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.digitalhub.R
+import com.example.digitalhub.domain.model.Carta
 
 @Composable
 fun CartaPreviewDeck(
-    imagenId: Int,
+    portadaId: String?,
+    cartas: List<Carta>,
     borderColor: Color = Color.Black
 ) {
+    val carta = cartas.find { it.id == portadaId }
+    val imagenId = carta?.imagenId ?: R.drawable.bt1001
     Box(
         modifier = Modifier
             .size(width = 50.dp, height = 70.dp)

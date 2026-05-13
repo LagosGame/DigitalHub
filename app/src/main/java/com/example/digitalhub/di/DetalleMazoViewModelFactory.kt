@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.digitalhub.data.local.FakeCartaDataSource
 import com.example.digitalhub.data.local.FakeMazoDataSource
+import com.example.digitalhub.data.repository.MazoRepositoryFirestoreImpl
 import com.example.digitalhub.domain.repository.CartaRepositoryImpl
-import com.example.digitalhub.domain.repository.MazoRepositoryImpl
 import com.example.digitalhub.domain.usecase.ActualizarMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
 import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
@@ -20,8 +20,7 @@ class DetalleMazoViewModelFactory(
             val cartaRepository = CartaRepositoryImpl(fakeCartaDataSource)
             val getCartasUseCase = GetCartasUseCase(cartaRepository)
 
-            val fakeMazoDataSource = FakeMazoDataSource()
-            val mazoRepository = MazoRepositoryImpl(fakeMazoDataSource)
+            val mazoRepository = MazoRepositoryFirestoreImpl()
             val getMazoByIdUseCase = GetMazoByIdUseCase(mazoRepository)
             val actualizarMazoUseCase = ActualizarMazoUseCase(mazoRepository)
 

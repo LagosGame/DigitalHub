@@ -16,6 +16,8 @@ import com.example.digitalhub.presentation.ui.screen.DetalleMazoScreen
 import com.example.digitalhub.presentation.ui.screen.ListaMazosScreen
 import com.example.digitalhub.presentation.ui.screen.LoginScreen
 import com.example.digitalhub.presentation.ui.screen.MainScreen
+import com.example.digitalhub.presentation.ui.screen.PerfilScreen
+import com.example.digitalhub.presentation.ui.screen.RecuperarPasswordScreen
 import com.example.digitalhub.presentation.ui.screen.RegisterScreen
 import com.example.digitalhub.presentation.ui.screen.TierListScreen
 import com.example.digitalhub.presentation.ui.screen.VerMazoScreen
@@ -39,6 +41,9 @@ fun NavegacionApp(
                 },
                 onRegisterSuccess = {
                     navController.navigate("register")
+                },
+                onNavigateToRecuperarPassword = {
+                    navController.navigate("recuperar_password")
                 }
             )
 
@@ -55,6 +60,11 @@ fun NavegacionApp(
                 }
             )
         }
+        composable("recuperar_password") {
+            RecuperarPasswordScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
 
         composable("home") {
             MainScreen(
@@ -68,8 +78,7 @@ fun NavegacionApp(
                     navController.navigate("lista_mazos")
                 },
                 onPerfil = {
-                    println("Navegar a Perfil")
-                    // TODO: navController.navigate("perfil")
+                    navController.navigate("perfil")
                 })
         }
         composable("register"){
@@ -157,8 +166,8 @@ fun NavegacionApp(
                 onMazoClick = { mazoId ->
                     navController.navigate("ver_mazo/$mazoId")
                 },
-                onPerfilClick = { autorId ->
-                    println("Ver perfil: $autorId")
+                onPerfilClick = { userId ->
+                    navController.navigate("perfil/$userId")
                 }
             )
         }
@@ -180,8 +189,8 @@ fun NavegacionApp(
                 onBack = {
                     navController.popBackStack()
                 },
-                onPerfilAutor = {
-                    println("👤 Ver perfil")
+                onPerfilAutor = { autorId->
+                    navController.navigate("perfil/$autorId")
                 },
                 onComentariosClick = {
                     navController.navigate("comentarios/$mazoId")
@@ -199,8 +208,51 @@ fun NavegacionApp(
                 onBack = {
                     navController.popBackStack()
                 },
-                onPerfilClick = {
-                    println("👤 Ver perfil")
+                onPerfilClick = { autorId->
+                    navController.navigate("perfil/$autorId")
+                }
+            )
+        }
+        composable("perfil") {
+            PerfilScreen(
+                userId = null,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onEditarPerfil = {
+                    println("TODO: Editar perfil")
+                },
+                onVerMazo = { mazoId ->
+                    navController.navigate("ver_mazo/$mazoId")
+                },
+                onNavigateToLogin = {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(
+            route = "perfil/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+
+            PerfilScreen(
+                userId = userId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onEditarPerfil = {
+                    println("TODO: Editar perfil")
+                },
+                onVerMazo = { mazoId ->
+                    navController.navigate("ver_mazo/$mazoId")
+                },
+                onNavigateToLogin = {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
             )
         }
@@ -216,9 +268,6 @@ fun NavegacionApp(
                 cartaId = cartaId,
                 onBack = {
                     navController.popBackStack()
-                },
-                onAddToDeck = {
-                    println("Añadir carta $cartaId a mazo")
                 }
             )
         }

@@ -19,7 +19,9 @@ fun CartaDetalleContentido(
     onToggleFavorita: () -> Unit,
     onIncrementarCantidad: () -> Unit,
     onDecrementarCantidad: () -> Unit,
-    onAddToDeck: () -> Unit
+    onAddToDeck: () -> Unit,
+    onSeleccionarMazo: (String) -> Unit,
+    onCerrarDialogo: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         FondoPrincipal()
@@ -57,5 +59,13 @@ fun CartaDetalleContentido(
                 )
             }
         }
+    }
+    if (uiState.mostrarDialogoSeleccionarMazo) {
+        DialogoSeleccionarMazo(
+            mazosDisponibles = uiState.mazosDisponibles,
+            onSeleccionarMazo = onSeleccionarMazo,
+            onCancelar = onCerrarDialogo,
+            cartas = uiState.todasLasCartas
+        )
     }
 }

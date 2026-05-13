@@ -14,8 +14,7 @@ fun CartaDetalleScreen(
     viewModel: CartaDetalleViewModel = viewModel(
         factory = CartaDetalleViewModelFactory(cartaId)
     ),
-    onBack:() -> Unit,
-    onAddToDeck:() -> Unit
+    onBack:() -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -25,6 +24,8 @@ fun CartaDetalleScreen(
         onToggleFavorita = viewModel::toggleFavorita,
         onIncrementarCantidad = viewModel::incrementarCantidad,
         onDecrementarCantidad = viewModel::decrementarCantidad,
-        onAddToDeck = onAddToDeck
+        onAddToDeck = viewModel::abrirDialogoSeleccionarMazo,
+        onSeleccionarMazo = viewModel::añadirCartaAMazo,
+        onCerrarDialogo = viewModel::cerrarDialogoSeleccionarMazo
     )
 }

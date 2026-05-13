@@ -1,16 +1,18 @@
 package com.example.digitalhub.domain.model
 
 data class Mazo(
-    val id: String,
-    val nombre: String,
-    val colores: List<ColorCarta>,
+    val id: String= "",
+    val nombre: String = "",
+    val userId: String = "",
+    val colores: List<ColorCarta> = emptyList(),
     val cartasNormales: Int = 0,
     val cartasHuevo: Int = 0,
-    val portadaId: Int,
+    val portadaId: String? = null,
     val tags: List<String> = emptyList(),
     val cartas: List<CartaEnMazo> = emptyList(),
     val esFavorito : Boolean = false,
-    val autorId : String = "",
+    val fechaCreacion: Long = System.currentTimeMillis(),
+    val fechaModificacion: Long = System.currentTimeMillis(),
 
     //para detalles//
     val descripcion: String = "",
@@ -20,13 +22,13 @@ data class Mazo(
 
 )
 data class CartaEnMazo(
-    val cartaId: String,
-    val cantidad: Int
+    val cartaId: String= "",
+    val cantidad: Int = 0
 )
 
 data class Estrategia(
-    val titulo: String,
-    val cartasIds: List<String>
+    val titulo: String= "",
+    val cartasIds: List<String> = emptyList()
 )
 data class Estadisticas(
     val ataque: Int = 5,

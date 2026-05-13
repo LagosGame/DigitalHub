@@ -82,4 +82,7 @@ class ConstruirMazoViewModel(
             }
         }
     }
+    fun recargarMazos() {
+        fetchMazos()
+    }
 }

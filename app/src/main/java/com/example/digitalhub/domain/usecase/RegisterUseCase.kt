@@ -1,6 +1,7 @@
 package com.example.digitalhub.domain.usecase
 
 import com.example.digitalhub.domain.model.AutentificaciónResultado
+import com.example.digitalhub.domain.model.User
 import com.example.digitalhub.domain.repository.AutentificacionRepository
 
 class RegisterUseCase(
@@ -11,31 +12,35 @@ class RegisterUseCase(
         email: String,
         password: String,
         confirmPassword: String
-    ): AutentificaciónResultado{
+    ): Result<User>{
         if (username.isBlank()) {
-            return AutentificaciónResultado.Incorrecto("Username cannot be blank")
+            return Result.failure(Exception("Username cannot be blank"))
+        }
+
+        if (username.length < 3) {
+            return Result.failure(Exception("Username must have at least 3 characters"))
         }
 
         if (email.isBlank()) {
-            return AutentificaciónResultado.Incorrecto("Email cannot be blank")
+            return Result.failure(Exception("Email cannot be blank"))
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return AutentificaciónResultado.Incorrecto("Invalid email")
+            return Result.failure(Exception("Invalid email"))
         }
 
         if (password.isBlank()) {
-            return AutentificaciónResultado.Incorrecto("Password cannot be blank")
+            return Result.failure(Exception("Password cannot be blank"))
         }
 
         if (password.length < 6) {
-            return AutentificaciónResultado.Incorrecto("Password must have at least 6 characters")
+            return Result.failure(Exception("Password must have at least 6 characters"))
         }
 
         if (password != confirmPassword) {
-            return AutentificaciónResultado.Incorrecto("Passwords don't match")
+            return Result.failure(Exception("Passwords don't match"))
         }
-
-        return autentificacionRepository.registrar(username, email, password)
+        
+        return autentificacionRepository.registrar(email, password, username)
     }
 }

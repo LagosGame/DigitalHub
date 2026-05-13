@@ -9,6 +9,7 @@ import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
 import com.example.digitalhub.presentation.ui.state.DetalleMazoUiState
 import com.example.digitalhub.presentation.ui.state.EstadisticasEdit
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -22,6 +23,17 @@ class DetalleMazoViewModel(
 
     private val _uiStatw = MutableStateFlow(DetalleMazoUiState())
     val uiState = _uiStatw.asStateFlow()
+
+    private val _eventoNavegacion = MutableStateFlow<EventoNavegacion?>(null)
+    val eventoNavegacion:  StateFlow<EventoNavegacion?> = _eventoNavegacion.asStateFlow()
+
+    sealed class EventoNavegacion {
+        object VolverAtras : EventoNavegacion()
+    }
+
+    fun limpiarEvento() {
+        _eventoNavegacion.value = null
+    }
 
     init {
         fetchMazo()
@@ -66,6 +78,7 @@ class DetalleMazoViewModel(
 
     fun actualizarDescripcion(nuevaDescripcion : String){
         _uiStatw.update { it.copy(descripcion = nuevaDescripcion) }
+        guardarCambios()
     }
     fun toggleDialogoDescripcion() {
         _uiStatw.update { it.copy(mostrarDialogoDescripcion = !it.mostrarDialogoDescripcion) }
@@ -76,11 +89,13 @@ class DetalleMazoViewModel(
         _uiStatw.update {
             it.copy(estrategias = it.estrategias + nuevaEstrategia)
         }
+        guardarCambios()
     }
     fun eliminarEstrategia(index: Int) {
         _uiStatw.update {
             it.copy(estrategias = it.estrategias.filterIndexed { i, _ -> i != index })
         }
+        guardarCambios()
     }
     fun toggleDialogoEstrategia() {
         _uiStatw.update { it.copy(mostrarDialogoEstrategia = !it.mostrarDialogoEstrategia) }
@@ -93,11 +108,13 @@ class DetalleMazoViewModel(
                 it.copy(cartasImportantes = it.cartasImportantes + cartaId)
             }
         }
+        guardarCambios()
     }
     fun eliminarCartaImportante(cartaId: String) {
         _uiStatw.update {
             it.copy(cartasImportantes = it.cartasImportantes.filter { id -> id != cartaId })
         }
+        guardarCambios()
     }
     fun toggleDialogoCartasImportantes() {
         _uiStatw.update { it.copy(mostrarDialogoCartasImportantes = !it.mostrarDialogoCartasImportantes) }
@@ -109,12 +126,14 @@ class DetalleMazoViewModel(
                 it.copy(tags = it.tags + tag)
             }
         }
+        guardarCambios()
     }
 
     fun eliminarTag(tag: String) {
         _uiStatw.update {
             it.copy(tags = it.tags.filter { t -> t != tag })
         }
+        guardarCambios()
     }
 
     fun toggleDialogoTags() {
@@ -136,6 +155,7 @@ class DetalleMazoViewModel(
             }
             it.copy(estadisticas = nuevasStats)
         }
+        guardarCambios()
     }
 
     fun toggleDialogoEstadisticas() {
@@ -145,7 +165,7 @@ class DetalleMazoViewModel(
 
     //guardar IMPORTANTE
 
-    fun guardarCambios(onSuccess: () -> Unit) {
+    fun guardarCambios() {
         viewModelScope.launch {
             val mazo = _uiStatw.value.mazo ?: return@launch
 
@@ -165,10 +185,18 @@ class DetalleMazoViewModel(
                 )
 
                 actualizarMazoUseCase(mazoActualizado)
-                onSuccess()
+                    .onSuccess {
+                        _uiStatw.update { it.copy(mazo = mazoActualizado) }
+                    }
+                    .onFailure { error ->
+                        error.printStackTrace()
+                        _uiStatw.update {
+                            it.copy(errorMessage = "Error: ${error.message}")
+                        }
+                    }
             } catch (e: Exception) {
                 _uiStatw.update {
-                    it.copy(errorMessage = "Error al guardar: ${e.message}")
+                    it.copy(errorMessage = "Error: ${e.message}")
                 }
             }
         }

@@ -51,7 +51,7 @@ fun ListaMazosContentido(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFF1565C0))
-                    .padding(vertical = 20.dp)
+                    .padding(vertical = 60.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -127,8 +127,13 @@ fun ListaMazosContentido(
                     }
                 }
                 else -> {
-                    val mazosFiltrados = uiState.mazos.filter { mazo ->
-                        mazo.nombre.contains(uiState.busqueda, ignoreCase = true)
+                    val mazosFiltrados = if (uiState.busqueda.isBlank()) {
+                        uiState.mazos
+                    } else {
+                        uiState.mazos.filter { mazo ->
+                            mazo.nombre.contains(uiState.busqueda, ignoreCase = true) ||
+                                    mazo.tags.any { tag -> tag.contains(uiState.busqueda, ignoreCase = true) }
+                        }
                     }
 
                     if (mazosFiltrados.isEmpty()) {
@@ -154,8 +159,10 @@ fun ListaMazosContentido(
                             items(mazosFiltrados) { mazo ->
                                 CardMazoLista(
                                     mazo = mazo,
+                                    cartas = uiState.todasLasCartas,
+                                    usuario =  uiState.usuarios[mazo.userId],
                                     onMazoClick = { onMazoClick(mazo.id) },
-                                    onPerfilClick = { onPerfilClick(mazo.autorId) },
+                                    onPerfilClick = { onPerfilClick(mazo.userId) },
                                     onCopiarClick = { onCopiarMazo(mazo.id) }
                                 )
                             }

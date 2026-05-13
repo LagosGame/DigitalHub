@@ -92,7 +92,8 @@ fun SeccionEstrategias(
                     EstrategiaItem(
                         estrategia = estrategia,
                         cartas = todasLasCartas.filter { it.id in estrategia.cartasIds },
-                        onEliminar = { onEliminar(index) }
+                        onEliminar = { onEliminar(index) },
+                        readOnly = readOnly
                     )
                 }
             }
@@ -128,9 +129,9 @@ private fun EstrategiaItem(
             if (!readOnly) {
                 IconButton(onClick = onEliminar) {
                     Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Add",
-                        tint = Color.White
+                        Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.Red
                     )
                 }
             }
@@ -141,7 +142,8 @@ private fun EstrategiaItem(
         ) {
             items(cartas) { carta ->
                 CartaPreviewDeck(
-                    imagenId = carta.imagenId,
+                    portadaId = carta.id,
+                    cartas = cartas,
                     borderColor = Color.White
                 )
             }

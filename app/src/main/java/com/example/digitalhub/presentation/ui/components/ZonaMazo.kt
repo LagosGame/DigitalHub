@@ -145,12 +145,13 @@ fun ZonaMazo(
 
                 IconButton(
                     onClick = onNavToDetalle,
-                    enabled = cartasDelMazo.isNotEmpty()
+                    enabled = uiState.mazoId.isNotBlank() && cartasDelMazo.isNotEmpty()
                 ) {
                     Icon(
                         Icons.Default.Info,
                         "Guías y estrategias",
-                        tint = if (cartasDelMazo.isNotEmpty()) Color.Blue else Color.Gray
+                        tint = if (uiState.mazoId.isNotBlank() && cartasDelMazo.isNotEmpty())
+                            Color.Blue else Color.Gray
                     )
                 }
 
@@ -160,7 +161,8 @@ fun ZonaMazo(
                 ) {
                     if (cartaPortada != null) {
                         CartaPreviewDeck(
-                            imagenId = cartaPortada.imagenId,
+                            portadaId = cartaPortada.id,
+                            cartas =listOf(cartaPortada),
                             borderColor = Color.Blue
                         )
                     } else {

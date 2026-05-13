@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,9 +36,11 @@ fun LoginContentido(
     uiState: LoginUiState,
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onRememberChange: () -> Unit,
     onLoginClick: () -> Unit,
     onGoogleLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    onRecuperarPasswordClick: () -> Unit
 ){
     //Fondo
     FondoPrincipal()
@@ -97,6 +102,46 @@ fun LoginContentido(
                     isPassword = true,
                     enabled = !uiState.isLoading
                 )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Checkbox(
+                        checked = uiState.recordarCredenciales,
+                        onCheckedChange = { onRememberChange() },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = Color(0xFF1565C0),
+                            uncheckedColor = Color.White
+                        ),
+                        enabled = !uiState.isLoading
+                    )
+                    Text(
+                        text = "Remember me",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontFamily = Roboto,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+
+
+                if (uiState.errorMessage != null) {
+                    Text(
+                        text = uiState.errorMessage,
+                        color = Color.Red,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(color = Color.White)
+                }
 
                 //Boton//
                 BotonPrimero (
@@ -108,18 +153,18 @@ fun LoginContentido(
                 //Boton//
                 BotonPrimero (modifier = Modifier.width(240.dp).height(50.dp),
                     enabled = !uiState.isLoading,
-                    text = "Login with Google",
-                    onClick = onGoogleLoginClick
+                    text = "Register",
+                    onClick = onRegisterClick
                 )
                 Box(
                     modifier = Modifier.clickable {
-                        onRegisterClick()
+                        onRecuperarPasswordClick()
                     }
                 ) {
                     key("subtitulo") {
                         //Texto que nos redirige a RegistroScreen onClick//
                         LetrasBordes(
-                            "Create an account",
+                            "Forgot password?",
                             fontSize = 18.sp,
                             fontFamily = Roboto,
                             fontWeight = FontWeight.Normal,
@@ -145,5 +190,7 @@ fun LoginPreview(){
         onLoginClick = {},
         onGoogleLoginClick = {},
         onRegisterClick =  {},
+        onRememberChange = {},
+        onRecuperarPasswordClick = {}
     )
 }

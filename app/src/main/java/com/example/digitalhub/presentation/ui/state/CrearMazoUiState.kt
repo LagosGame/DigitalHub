@@ -9,7 +9,7 @@ data class CrearMazoUiState(
     val cartasHuevo: List<CartaEnMazo> = emptyList(),
     val totalNormales: Int = 0,
     val totalHuevo: Int = 0,
-    val cartaIdPortada : String? ="",
+    val portadaId: String? = null,
     val errorMessage: String? = null,
     val esFavorito: Boolean = false,
 
@@ -18,5 +18,5 @@ data class CrearMazoUiState(
     val cartasBiblioteca: List<Carta> = emptyList(),
     val isLoadingBiblioteca : Boolean = false,
 
-    val mazoId: String = System.currentTimeMillis().toString()
+    val mazoId: String = ""
 )

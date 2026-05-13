@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -26,21 +27,32 @@ fun BoxInfoCarta(
     content: @Composable () -> Unit
 ) {
     val estilo = estiloParaColor(colorCarta)
+    val bordeFinal = when (colorCarta) {
+        ColorCarta.BLACK -> Color.White
+        ColorCarta.WHITE -> Color.Black
+        ColorCarta.YELLOW -> Color.Black
+        else -> estilo.borde
+    }
 
+    val textoFinal = when (colorCarta) {
+        ColorCarta.WHITE -> Color.Black
+        ColorCarta.YELLOW -> Color.Black
+        else -> estilo.texto
+    }
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(estilo.fondo)
             .border(
                 width = 3.dp,
-                color = estilo.borde,
+                color = bordeFinal,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(8.dp)
     ) {
         Column {
             CompositionLocalProvider(
-                LocalContentColor provides estilo.texto
+                LocalContentColor provides textoFinal
             ) {
                 Column {
                     ProvideTextStyle(

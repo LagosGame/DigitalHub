@@ -7,4 +7,8 @@ data class User(
     val username : String,
     val email : String,
     val iconoId: Int = R.drawable.ic_launcher_foreground,
+    val cumpleanos: String = "",
+    val colorFavorito: ColorCarta? = null,
+    val biografia: String = "",
+    val mazosIds: List<String> = emptyList()
 )

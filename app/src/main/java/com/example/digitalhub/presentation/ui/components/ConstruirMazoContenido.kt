@@ -174,8 +174,11 @@ fun ConstruirMazoContenido(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        CartaPreviewDeck(imagenId = mazo.portadaId,
-                                            borderColor = colorBorde)
+                                        CartaPreviewDeck(
+                                            portadaId = mazo.portadaId,
+                                            cartas = uiState.todasLasCartas ?: emptyList(),
+                                            borderColor = colorBorde
+                                        )
 
                                         Text(
                                             text = "${mazo.cartasNormales} / ${mazo.cartasHuevo}",

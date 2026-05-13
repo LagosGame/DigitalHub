@@ -38,7 +38,11 @@ fun HomeContentido(
     onBiblioteca: () -> Unit,
     onConstruir: () -> Unit,
     onLista: () -> Unit,
-    onPerfil: () -> Unit
+    onPerfil: () -> Unit,
+    onReportarError: () -> Unit,
+    onMensajeChange: (String) -> Unit,
+    onEnviarReporte: () -> Unit,
+    onCerrarDialogo: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -134,7 +138,7 @@ fun HomeContentido(
         }
     }
 
-    //Botón de opciones
+    //Botón de errores
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -143,7 +147,7 @@ fun HomeContentido(
         horizontalAlignment = Alignment.End
     ) {
         IconButton(
-            onClick = { /* TODO: Opciones */ },
+            onClick = onReportarError,
             modifier = Modifier.background(
                 color = Color.White,
                 shape = CircleShape
@@ -151,10 +155,18 @@ fun HomeContentido(
         ) {
             Icon(
                 imageVector = Icons.Filled.Build,
-                contentDescription = "Settings",
+                contentDescription = "Errors",
                 tint = Color.Black
             )
         }
+    }
+    if (uiState.mostrarDialogoReportar) {
+        DialogoReportarError(
+            mensajeError = uiState.mensajeError,
+            onMensajeChange = onMensajeChange,
+            onEnviar = onEnviarReporte,
+            onCancelar = onCerrarDialogo
+        )
     }
 }
 
@@ -162,17 +174,4 @@ fun HomeContentido(
 private fun abrirUrl(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     context.startActivity(intent)
-}
-
-@Preview
-@Composable
-fun HomeContentidoPreview() {
-    HomeContentido(
-        uiState = MainUiState(),
-        onCambiarIndice = {},
-        onBiblioteca = {},
-        onConstruir = {},
-        onLista = {},
-        onPerfil = {}
-    )
 }

@@ -38,14 +38,14 @@ fun RegisterContentido(
     onRegisterClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    // 👇 Aquí pondrás tu FondoNumero2 cuando lo tengas
+
     FondoSecundario()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(40.dp),
+                .padding(50.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.Start
         ) {
@@ -92,7 +92,7 @@ fun RegisterContentido(
             )
             TextoError(uiState.passwordError)
 
-            // Campo Confirmar Contraseña
+            //Confirmar Contraseña
             TextfieldUsuario(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.confirmPassword,
@@ -123,7 +123,7 @@ fun RegisterContentido(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            //Google
+            //Volver
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,8 +135,8 @@ fun RegisterContentido(
                     modifier = Modifier
                         .width(280.dp)
                         .height(70.dp),
-                    text = "Sign in with Google",
-                    onClick = {}
+                    text = "Back to Login",
+                    onClick = onBackClick
                 )
             }
         }

@@ -9,4 +9,7 @@ class GetComentariosUseCase(
     suspend operator fun invoke(mazoId: String): List<Comentario> {
         return repository.getComentariosPorMazo(mazoId)
     }
+    suspend fun getRespuestas(comentarioPadreId: String): List<Comentario> {
+        return repository.getRespuestas(comentarioPadreId)
+    }
 }

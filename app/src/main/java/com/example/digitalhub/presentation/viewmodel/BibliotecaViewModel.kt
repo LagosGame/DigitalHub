@@ -2,98 +2,127 @@ package com.example.digitalhub.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.digitalhub.domain.model.ColorCarta
-import com.example.digitalhub.domain.model.Expansion
-import com.example.digitalhub.domain.model.Nivel
-import com.example.digitalhub.domain.model.RarezaCarta
-import com.example.digitalhub.domain.model.TipoCarta
-import com.example.digitalhub.domain.usecase.FiltrarCartasUseCase
-import com.example.digitalhub.domain.usecase.GetCartasUseCase
+import com.example.digitalhub.domain.model.*
+import com.example.digitalhub.domain.repository.CartaRepositoryImpl
+import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
 import com.example.digitalhub.presentation.ui.state.BibliotecaUiState
 import com.example.digitalhub.presentation.ui.state.Selector
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BibliotecaViewModel(
-    private val getCartasUseCase: GetCartasUseCase,
-    private val filtrarCartasUseCase: FiltrarCartasUseCase
-): ViewModel()
-{
+    private val cartaRepository: CartaRepositoryImpl,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
+) : ViewModel() {
+
     private val _uiState = MutableStateFlow(BibliotecaUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<BibliotecaUiState> = _uiState.asStateFlow()
+
+    private var currentUserId: String? = null
+    private var todasLasCartas: List<Carta> = emptyList()
 
     init {
-        fetchCartas()
+        cargarBiblioteca()
     }
 
-    private fun fetchCartas(){
+    private fun cargarBiblioteca() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
             try {
-                val cartas = getCartasUseCase()
+
+                val user = getCurrentUserUseCase()
+                currentUserId = user?.id
+
+                if (currentUserId == null) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Usuario no autenticado"
+                        )
+                    }
+                    return@launch
+                }
+
+                todasLasCartas = cartaRepository.getCartasConBiblioteca(currentUserId!!)
+
                 _uiState.update {
                     it.copy(
-                        cartas = cartas,
+                        cartas = todasLasCartas,
                         isLoading = false
                     )
                 }
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "Error al cargar el mensaje : ${e.message}"
+                        errorMessage = "Error: ${e.message}"
                     )
                 }
             }
         }
     }
-    //Filtros//
 
-    private fun aplicarFiltros(){
+    private fun aplicarFiltros() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
             try {
-                val cartasFiltradas = filtrarCartasUseCase(
-                    color = _uiState.value.colorFiltro,
-                    coste = _uiState.value.costeFiltro,
-                    rareza = _uiState.value.rarezaFiltro,
-                    tipo = _uiState.value.tipoFiltro,
-                    nivel = _uiState.value.nivelFiltro,
-                    expansion = _uiState.value.expansionFiltro,
-                    soloFav = _uiState.value.soloFav,
-                    soloAlt = _uiState.value.soloAlt,
-                    soloMiBiblioteca = _uiState.value.soloMiBiblioteca
-                )
-                _uiState.update {
-                    it.copy(
-                        cartas = cartasFiltradas,
-                        isLoading = false
-                    )
+                val state = _uiState.value
+                var cartasFiltradas = todasLasCartas
+
+                state.colorFiltro?.let { color ->
+                    cartasFiltradas = cartasFiltradas.filter { it.color.contains(color) }
                 }
-            }catch (e: Exception){
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Error al filtrar : ${e.message}"
-                    )
+
+                state.costeFiltro?.let { coste ->
+                    cartasFiltradas = cartasFiltradas.filter { it.coste == coste }
                 }
+
+                state.rarezaFiltro?.let { rareza ->
+                    cartasFiltradas = cartasFiltradas.filter { it.rareza == rareza }
+                }
+
+                state.tipoFiltro?.let { tipo ->
+                    cartasFiltradas = cartasFiltradas.filter { it.tipo == tipo }
+                }
+
+                state.nivelFiltro?.let { nivel ->
+                    cartasFiltradas = cartasFiltradas.filter { it.nivel == nivel }
+                }
+
+                state.expansionFiltro?.let { expansion ->
+                    cartasFiltradas = cartasFiltradas.filter { it.expansion == expansion }
+                }
+
+                if (state.soloFav) {
+                    cartasFiltradas = cartasFiltradas.filter { it.esFav }
+                }
+
+                if (state.soloAlt) {
+                    cartasFiltradas = cartasFiltradas.filter { it.esAlt }
+                }
+
+                if (state.soloMiBiblioteca) {
+                    cartasFiltradas = cartasFiltradas.filter { it.cantidadEnBiblioteca > 0 }
+                }
+
+                if (state.busqueda.isNotBlank()) {
+                    cartasFiltradas = cartasFiltradas.filter {
+                        it.nombre.contains(state.busqueda, ignoreCase = true)
+                    }
+                }
+
+                _uiState.update { it.copy(cartas = cartasFiltradas) }
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
             }
         }
     }
 
-    fun activarSoloMiBiblioteca() {
-        _uiState.update {
-            it.copy(soloMiBiblioteca = !it.soloMiBiblioteca)
-        }
-        aplicarFiltros()
-    }
-    //Abir y cerrar los selectores de filtros
-
-    fun abrirSelector(selector: Selector){
+    fun abrirSelector(selector: Selector) {
         _uiState.update {
             it.copy(
                 selectorAbierto = if (it.selectorAbierto == selector) null else selector
@@ -101,7 +130,7 @@ class BibliotecaViewModel(
         }
     }
 
-    fun selectColor(color : ColorCarta?){
+    fun selectColor(color: ColorCarta?) {
         _uiState.update {
             it.copy(
                 colorFiltro = color,
@@ -110,7 +139,8 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectCoste(coste : Int?) {
+
+    fun selectCoste(coste: Int?) {
         _uiState.update {
             it.copy(
                 costeFiltro = coste,
@@ -119,7 +149,8 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectRareza(rareza : RarezaCarta?) {
+
+    fun selectRareza(rareza: RarezaCarta?) {
         _uiState.update {
             it.copy(
                 rarezaFiltro = rareza,
@@ -128,7 +159,8 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectTipo(tipo : TipoCarta?) {
+
+    fun selectTipo(tipo: TipoCarta?) {
         _uiState.update {
             it.copy(
                 tipoFiltro = tipo,
@@ -137,7 +169,8 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectNivel(nivel : Nivel?) {
+
+    fun selectNivel(nivel: Nivel?) {
         _uiState.update {
             it.copy(
                 nivelFiltro = nivel,
@@ -146,7 +179,8 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
-    fun selectExpansion(expansion : Expansion?) {
+
+    fun selectExpansion(expansion: Expansion?) {
         _uiState.update {
             it.copy(
                 expansionFiltro = expansion,
@@ -155,35 +189,31 @@ class BibliotecaViewModel(
         }
         aplicarFiltros()
     }
+
     fun activarFav() {
-        _uiState.update {
-            it.copy(soloFav = !it.soloFav)
-        }
+        _uiState.update { it.copy(soloFav = !it.soloFav) }
         aplicarFiltros()
-    }
-    fun activarAlt() {
-        _uiState.update {
-            it.copy(soloAlt = !it.soloAlt)
-        }
-        aplicarFiltros()
-    }
-    //Busqueda nombre//
-    fun onBusquedaChange(texto: String) {
-        _uiState.update { it.copy(busqueda = texto) }
-        viewModelScope.launch {
-            val todasLasCartas = getCartasUseCase()
-            val cartasFiltradas = if (texto.isBlank()) {
-                todasLasCartas
-            } else {
-                todasLasCartas.filter { carta ->
-                    carta.nombre.contains(texto, ignoreCase = true)
-                }
-            }
-            _uiState.update { it.copy(cartas = cartasFiltradas) }
-        }
     }
 
-    //Resetear filtros//
+    fun activarAlt() {
+        _uiState.update { it.copy(soloAlt = !it.soloAlt) }
+        aplicarFiltros()
+    }
+
+    fun activarSoloMiBiblioteca() {
+        _uiState.update { it.copy(soloMiBiblioteca = !it.soloMiBiblioteca) }
+        aplicarFiltros()
+    }
+
+    fun onBusquedaChange(texto: String) {
+        _uiState.update { it.copy(busqueda = texto) }
+        aplicarFiltros()
+    }
+
+    fun recargarBiblioteca() {
+        cargarBiblioteca()
+    }
+
     fun limpiarFiltros() {
         _uiState.update {
             it.copy(
@@ -196,10 +226,9 @@ class BibliotecaViewModel(
                 soloFav = false,
                 soloAlt = false,
                 soloMiBiblioteca = false,
-                selectorAbierto = null,
-                busqueda = ""
+                busqueda = "",
+                cartas = todasLasCartas
             )
         }
-        fetchCartas()
     }
 }

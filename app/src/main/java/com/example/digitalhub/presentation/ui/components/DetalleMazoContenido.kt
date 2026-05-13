@@ -30,7 +30,6 @@ import com.example.digitalhub.ui.theme.Kenyan
 fun DetalleMazoContentido(
     uiState: DetalleMazoUiState,
     onBack: () -> Unit,
-    onGuardar: () -> Unit,
     onEditarDescripcion: () -> Unit,
     onAñadirEstrategia: () -> Unit,
     onEliminarEstrategia: (Int) -> Unit,
@@ -115,12 +114,6 @@ fun DetalleMazoContentido(
                         SeccionEstadisticas(
                             estadisticas = uiState.estadisticas,
                             onEdit = onEditarEstadisticas
-                        )
-
-                        BotonMazo(
-                            tipo = TipoBoton.EDITAR,
-                            texto = "Guardar",
-                            onClick = onGuardar
                         )
 
                         Spacer(Modifier.height(32.dp))

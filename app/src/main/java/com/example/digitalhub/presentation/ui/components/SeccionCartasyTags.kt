@@ -90,7 +90,8 @@ fun SeccionCartasyTags(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CartaPreviewDeck(
-                            imagenId = carta.imagenId,
+                            portadaId = carta.id,
+                            cartas = cartasImportantes,
                             borderColor = Color.White
                         )
                         Text(

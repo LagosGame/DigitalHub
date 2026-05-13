@@ -1,5 +1,6 @@
 package com.example.digitalhub.presentation.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,13 +18,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,10 +59,32 @@ fun ComentarioItem(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color(0xFFFFEB3B), CircleShape)
+                    .clip(CircleShape)
                     .border(2.dp, Color.Black, CircleShape)
                     .clickable { onPerfilClick(comentario.autorId) }
-            )
+            ) {
+                if (comentario.autor.iconoId != null && comentario.autor.iconoId != 0) {
+                    Image(
+                        painter = painterResource(id = comentario.autor.iconoId),
+                        contentDescription = "Avatar",
+                        modifier = Modifier.fillMaxWidth(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFFFFEB3B)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Default Avatar",
+                            tint = Color.Black
+                        )
+                    }
+                }
+            }
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(

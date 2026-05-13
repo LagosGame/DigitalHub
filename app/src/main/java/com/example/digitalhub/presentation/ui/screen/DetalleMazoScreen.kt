@@ -1,6 +1,7 @@
 package com.example.digitalhub.presentation.ui.screen
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,15 +18,21 @@ fun DetalleMazoScreen(
     onBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val eventoNavegacion by viewModel.eventoNavegacion.collectAsStateWithLifecycle()
 
+    LaunchedEffect(eventoNavegacion) {
+        when (eventoNavegacion) {
+            is DetalleMazoViewModel.EventoNavegacion.VolverAtras -> {
+                onBack()
+                viewModel.limpiarEvento()
+            }
+            null -> {}
+        }
+    }
+    
     DetalleMazoContentido(
         uiState = uiState,
         onBack = onBack,
-        onGuardar = {
-            viewModel.guardarCambios {
-                onBack()
-            }
-        },
         onEditarDescripcion = viewModel::toggleDialogoDescripcion,
         onAñadirEstrategia = viewModel::toggleDialogoEstrategia,
         onEliminarEstrategia = viewModel::eliminarEstrategia,
@@ -88,11 +95,11 @@ fun DetalleMazoScreen(
         com.example.digitalhub.presentation.ui.components.DialogoEditarEstadisticas(
             estadisticasActuales = uiState.estadisticas,
             onConfirm = { nuevasStats ->
-                viewModel.actualizarEstadistica("Attack", nuevasStats.ataque)
-                viewModel.actualizarEstadistica("Defense", nuevasStats.defensa)
-                viewModel.actualizarEstadistica("Consistency", nuevasStats.consistencia)
-                viewModel.actualizarEstadistica("Versatility", nuevasStats.versatilidad)
-                viewModel.actualizarEstadistica("Comeback", nuevasStats.recuperacion)
+                viewModel.actualizarEstadistica("ATTACK", nuevasStats.ataque)
+                viewModel.actualizarEstadistica("DEFENSE", nuevasStats.defensa)
+                viewModel.actualizarEstadistica("CONSISTENCY", nuevasStats.consistencia)
+                viewModel.actualizarEstadistica("VERSATILITY", nuevasStats.versatilidad)
+                viewModel.actualizarEstadistica("COMEBACK", nuevasStats.recuperacion)
             },
             onDismiss = viewModel::toggleDialogoEstadisticas
         )

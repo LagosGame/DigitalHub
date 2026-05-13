@@ -50,8 +50,12 @@ fun CartaDetalleBoxes(
     onAddToDeck: () -> Unit
 
 ) {
+
+    val esCartaBlanca = carta.color.contains(ColorCarta.WHITE)
+    val colorTexto = if (esCartaBlanca) Color.Black else Color.White
+    val colorIcono = if (esCartaBlanca) Color.Black else Color.White
     val estilo = carta.color.firstOrNull() ?: ColorCarta.RAINBOW
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp)) {
         //Header
         Row(
             modifier = Modifier
@@ -122,6 +126,7 @@ fun CartaDetalleBoxes(
                         textAlign = TextAlign.Center,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
+                        color = colorTexto,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -141,6 +146,7 @@ fun CartaDetalleBoxes(
                             text = "Cost - ${carta.coste}",
                             textAlign = TextAlign.Center,
                             fontSize = 16.sp,
+                            color = colorTexto,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -155,6 +161,7 @@ fun CartaDetalleBoxes(
                             text = "Evo - ${carta.costeEvolucion ?: "-"}",
                             textAlign = TextAlign.Center,
                             fontSize = 16.sp,
+                            color = colorTexto,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -196,6 +203,7 @@ fun CartaDetalleBoxes(
                         },
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp,
+                        color = colorTexto,
                         modifier = Modifier.fillMaxWidth(),
                         maxLines = 2
                     )
@@ -211,6 +219,7 @@ fun CartaDetalleBoxes(
                             text = carta.texto,
                             textAlign = TextAlign.Justify,
                             fontSize = 14.sp,
+                            color = colorTexto,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -248,7 +257,7 @@ fun CartaDetalleBoxes(
                             Text(
                                 text = "Add to Library",
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = colorTexto,
                                 fontSize = 16.sp
                             )
 
@@ -266,7 +275,7 @@ fun CartaDetalleBoxes(
                                     Icon(
                                         Icons.Default.KeyboardArrowDown,
                                         contentDescription = "-",
-                                        tint = if (carta.cantidadEnBiblioteca > 0) Color.White else Color.Gray,
+                                        tint = if (carta.cantidadEnBiblioteca > 0) colorIcono else Color.Gray,
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }
@@ -274,7 +283,7 @@ fun CartaDetalleBoxes(
                                 //Cantidad
                                 Text(
                                     text = "${carta.cantidadEnBiblioteca}",
-                                    color = Color.White,
+                                    color = colorTexto,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -288,7 +297,7 @@ fun CartaDetalleBoxes(
                                     Icon(
                                         Icons.Default.KeyboardArrowUp,
                                         contentDescription = "+",
-                                        tint = if (carta.cantidadEnBiblioteca < 4) Color.White else Color.Gray,
+                                        tint = if (carta.cantidadEnBiblioteca < 4) colorIcono else Color.Gray,
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }

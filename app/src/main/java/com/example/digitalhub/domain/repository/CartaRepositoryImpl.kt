@@ -9,7 +9,8 @@ import com.example.digitalhub.domain.model.RarezaCarta
 import com.example.digitalhub.domain.model.TipoCarta
 
 class CartaRepositoryImpl(
-    private val fakeDataSource : FakeCartaDataSource
+    private val fakeDataSource : FakeCartaDataSource,
+    private val bibliotecaRepository: BibliotecaRepository? = null
 ): CartaRepository {
     override suspend fun getCartas(): List<Carta> {
         return fakeDataSource.getCartas()
@@ -17,6 +18,22 @@ class CartaRepositoryImpl(
 
     override suspend fun getCartaById(id: String): Carta? {
         return fakeDataSource.getCartas().find { it.id==id }
+    }
+    suspend fun getCartasConBiblioteca(userId: String): List<Carta> {
+        if (bibliotecaRepository == null) {
+            return getCartas()
+        }
+
+        val cartas = getCartas()
+        val biblioteca = bibliotecaRepository.getCartasBiblioteca(userId)
+
+        return cartas.map { carta ->
+            val cartaBiblio = biblioteca.find { it.cartaId == carta.id }
+            carta.copy(
+                esFav = cartaBiblio?.esFavorita ?: false,
+                cantidadEnBiblioteca = cartaBiblio?.cantidad ?: 0
+            )
+        }
     }
 
     override suspend fun filtrarCartas(
@@ -53,14 +70,8 @@ class CartaRepositoryImpl(
         expansion?.let {
             cartasFiltradas=cartasFiltradas.filter { it.expansion==expansion }
         }
-        if (soloFav){
-            cartasFiltradas= cartasFiltradas.filter { it.esFav }
-        }
         if (soloAlt){
             cartasFiltradas= cartasFiltradas.filter { it.esAlt }
-        }
-        if (soloMiBiblioteca) {
-            cartasFiltradas = cartasFiltradas.filter { it.cantidadEnBiblioteca > 0 }
         }
 
         return cartasFiltradas

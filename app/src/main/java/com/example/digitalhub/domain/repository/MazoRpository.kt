@@ -5,7 +5,8 @@ import com.example.digitalhub.domain.model.Mazo
 interface MazoRpository {
     suspend fun getMazos(): List<Mazo>
     suspend fun getMazoById(id: String): Mazo?
-    suspend fun crearMazo(mazo: Mazo)
-    suspend fun actualizarMazo(mazo: Mazo)
-    suspend fun eliminarMazo(id: String)
+    suspend fun getMazosByUserId(userId: String): List<Mazo>
+    suspend fun crearMazo(mazo: Mazo): Result<Unit>
+    suspend fun actualizarMazo(mazo: Mazo): Result<Unit>
+    suspend fun eliminarMazo(id: String): Result<Unit>
 }

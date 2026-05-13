@@ -2,7 +2,7 @@ package com.example.digitalhub.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.digitalhub.domain.model.AutentificaciónResultado
+import com.example.digitalhub.domain.usecase.CheckUsuarioUseCase
 import com.example.digitalhub.domain.usecase.RegisterUseCase
 import com.example.digitalhub.presentation.ui.state.RegisterUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    private val checkUsuarioUseCase: CheckUsuarioUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState())
@@ -108,25 +109,48 @@ class RegisterViewModel(
             }
             return
         }
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            try {
 
-            val result = registerUseCase(
-                username = currentState.username,
-                email = currentState.email,
-                password = currentState.password,
-                confirmPassword = currentState.confirmPassword
-            )
+                val isAvailable = checkUsuarioUseCase(currentState.username)
 
-            _uiState.update { it.copy(isLoading = false) }
-
-            when (result) {
-                is AutentificaciónResultado.Correcto -> {
-                    _navigationEvent.value = RegisterNavigationEvent.NavegarAHome
+                if (!isAvailable) {
+                    println("Username '${currentState.username}' already taken")
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            usernameError = "Username already taken"
+                        )
+                    }
+                    return@launch
                 }
-                is AutentificaciónResultado.Incorrecto -> {
-                    _uiState.update { it.copy(errorMessage = result.mensaje) }
+                // Registrar usuario
+                registerUseCase(
+                    username = currentState.username,
+                    email = currentState.email,
+                    password = currentState.password,
+                    confirmPassword = currentState.confirmPassword
+                )
+                    .onSuccess { user ->
+                        _uiState.update { it.copy(isLoading = false) }
+                        _navigationEvent.value = RegisterNavigationEvent.NavegarAHome
+                    }
+                    .onFailure { error ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = error.message ?: "Unknown error"
+                            )
+                        }
+                    }
+            } catch (e: Exception) {
+                println("Exception: ${e.message}")
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Error: ${e.message}"
+                    )
                 }
             }
         }

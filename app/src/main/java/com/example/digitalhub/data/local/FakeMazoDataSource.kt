@@ -16,10 +16,10 @@ class FakeMazoDataSource {
             colores = listOf(ColorCarta.RED),
             cartasNormales = 50,
             cartasHuevo = 5,
-            portadaId = R.drawable.bt1025,  // WarGreymon
+            portadaId = "BT1-025",  // WarGreymon
             tags = listOf("Aggro", "Tribal", "Meta"),
             esFavorito = true,
-            autorId = "user123",
+            userId = "user123",
             cartas = listOf(
 
                 CartaEnMazo("BT1-001", 3),
@@ -88,8 +88,9 @@ class FakeMazoDataSource {
             colores = listOf(ColorCarta.WHITE, ColorCarta.BLUE),
             cartasNormales = 50,
             cartasHuevo = 4,
-            portadaId = R.drawable.bt1084,
+            portadaId = "BT1-084",
             tags = listOf("Control"),
+            userId = "user456",
             cartas = emptyList()
         )
     )

@@ -76,5 +76,12 @@ val expansiones = listOf(
     Expansion("ST-02", "Cocytus Blue"),
     Expansion("ST-03", "Heaven's Yellow")
 )
+data class CartaBiblioteca(
+    val userId: String = "",
+    val cartaId: String = "",
+    val cantidad: Int = 0,
+    val esFavorita: Boolean = false,
+    val fechaAdquirida: Long = System.currentTimeMillis()
+)
 
 
