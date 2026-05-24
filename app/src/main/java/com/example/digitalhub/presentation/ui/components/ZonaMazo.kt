@@ -55,10 +55,10 @@ fun ZonaMazo(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             TextField(
                 value = uiState.nombreMazo,
@@ -83,7 +83,6 @@ fun ZonaMazo(
                 textAlign = TextAlign.Center
             )
 
-            BotonX(onBack)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -138,10 +137,6 @@ fun ZonaMazo(
                     onClick = onGuardar,
                     texto = "Save"
                 )
-
-                IconButton(onClick = onToggleFavorito) {
-                    Icon(Icons.Default.Favorite, null, tint = Color.Red)
-                }
 
                 IconButton(
                     onClick = onNavToDetalle,

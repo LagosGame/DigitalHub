@@ -1,4 +1,4 @@
-package com.example.digitalhub.data.model
+package com.example.digitalhub.domain.model
 
 import androidx.annotation.DrawableRes
 

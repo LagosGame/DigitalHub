@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.digitalhub.domain.model.Carta
+import coil.compose.AsyncImage
 import com.example.digitalhub.R
 @Composable
 fun MazoItem(
@@ -30,8 +33,12 @@ fun MazoItem(
     cartas: List<Carta>,
     onClick: () -> Unit
 ) {
-    val cartaPortada = cartas.find { it.id == mazo.portadaId }
-    val imagenId = cartaPortada?.imagenId ?: R.drawable.bt1001
+    val cartaPortada = if (mazo.portadaId != null) {
+        cartas.find { it.id == mazo.portadaId }
+    } else {
+        val primeraCartaId = mazo.cartas.firstOrNull()?.cartaId
+        cartas.find { it.id == primeraCartaId }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,14 +49,32 @@ fun MazoItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Image(
-            painter = painterResource(imagenId),
-            contentDescription = mazo.nombre,
-            modifier = Modifier
-                .size(60.dp)
-                .border(2.dp, Color.Black, RoundedCornerShape(4.dp)),
-            contentScale = ContentScale.Crop
-        )
+        if (cartaPortada != null) {
+            Image(
+                painter = painterResource(cartaPortada.imagenId),
+                contentDescription = cartaPortada.nombre,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .border(2.dp, Color.Black, RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .background(Color.Gray, RoundedCornerShape(4.dp))
+                    .border(2.dp, Color.Black, RoundedCornerShape(4.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "?",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
 
         Column(
             modifier = Modifier

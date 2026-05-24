@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -75,19 +77,11 @@ fun CardMazoLista(
                         strokeWidth = 20f,
                         textAlign = TextAlign.Center
                     )
-                    if (mazo.esFavorito) {
-                        Icon(
-                            Icons.Default.Favorite,
-                            contentDescription = "Favorito",
-                            tint = Color.Red,
-                            modifier = Modifier
-                                .padding(top = 8.dp, end = 8.dp)
-                                .size(32.dp)
-                                .border(2.dp, Color.Black, CircleShape)
-                                .background(Color.White, CircleShape)
-                                .padding(4.dp)
-                        )
-                    }
+                    Icon(
+                        imageVector = if (mazo.cartasNormales == 50 && mazo.cartasHuevo  == 4 || mazo.cartasHuevo ==5) Icons.Default.Check else Icons.Default.Warning,
+                        tint = if (mazo.cartasNormales == 50 && mazo.cartasHuevo  == 4 || mazo.cartasHuevo ==5) Color.Green else Color(0xFFFF9800),
+                        contentDescription = "Check"
+                    )
                     IndicadorColorMazo(mazo.colores)
                 }
 

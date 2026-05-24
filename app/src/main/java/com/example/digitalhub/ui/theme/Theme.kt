@@ -66,16 +66,24 @@ data class EstiloInfoCarta(
 )
 
 fun estiloParaColor(colorCarta: ColorCarta): EstiloInfoCarta {
-    return if (colorCarta == ColorCarta.WHITE) {
-        EstiloInfoCarta(
+    return when (colorCarta) {
+        ColorCarta.WHITE -> EstiloInfoCarta(
             fondo = Color.White,
             texto = Color.Black,
             borde = Color.Black
         )
-    } else {
-        val colorBase = colorCarta.toColor()
-        EstiloInfoCarta(
-            fondo = colorBase,
+        ColorCarta.YELLOW -> EstiloInfoCarta(
+            fondo = colorCarta.toColor(),
+            texto = Color.Black,
+            borde = Color.Black
+        )
+        ColorCarta.GREEN -> EstiloInfoCarta(
+            fondo = colorCarta.toColor(),
+            texto = Color.Black,
+            borde = Color.Black
+        )
+        else -> EstiloInfoCarta(
+            fondo = colorCarta.toColor(),
             texto = Color.White,
             borde = Color.White
         )

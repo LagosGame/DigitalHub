@@ -2,9 +2,8 @@ package com.example.digitalhub.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.digitalhub.data.local.FakeAuthDataSource
-import com.example.digitalhub.domain.repository.AutentificacionRepositoryImpl
-import com.example.digitalhub.domain.repository.UserRepositoryImpl
+import com.example.digitalhub.data.repository.AutentificacionRepositoryImpl
+import com.example.digitalhub.data.repository.UserRepositoryImpl
 import com.example.digitalhub.domain.usecase.CheckUsuarioUseCase
 import com.example.digitalhub.domain.usecase.RegisterUseCase
 import com.example.digitalhub.presentation.viewmodel.RegisterViewModel

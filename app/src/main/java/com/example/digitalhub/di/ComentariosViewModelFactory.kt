@@ -3,9 +3,9 @@ package com.example.digitalhub.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.digitalhub.data.repository.MazoRepositoryFirestoreImpl
-import com.example.digitalhub.domain.repository.AutentificacionRepositoryImpl
-import com.example.digitalhub.domain.repository.ComentarioRepositoryImpl
-import com.example.digitalhub.domain.repository.UserRepositoryImpl
+import com.example.digitalhub.data.repository.AutentificacionRepositoryImpl
+import com.example.digitalhub.data.repository.ComentarioRepositoryImpl
+import com.example.digitalhub.data.repository.UserRepositoryImpl
 import com.example.digitalhub.domain.usecase.AgregarComentarioUseCase
 import com.example.digitalhub.domain.usecase.GetComentariosUseCase
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
@@ -13,7 +13,6 @@ import com.example.digitalhub.domain.usecase.GetMazoByIdUseCase
 import com.example.digitalhub.domain.usecase.GetUserByIdUseCase
 import com.example.digitalhub.domain.usecase.ToggleLikeComentarioUseCase
 import com.example.digitalhub.presentation.viewmodel.ComentariosViewModel
-import kotlinx.coroutines.runBlocking
 
 class ComentariosViewModelFactory(
     private val mazoId: String

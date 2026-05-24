@@ -96,15 +96,6 @@ fun TierListContentido(
                     }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(FondoSecundarioColor())
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                BotonX(onBack)
-            }
         }
     }
 }

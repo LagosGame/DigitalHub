@@ -1,4 +1,4 @@
-package com.example.digitalhub.domain.repository
+package com.example.digitalhub.data.repository
 
 import com.example.digitalhub.data.local.FakeCartaDataSource
 import com.example.digitalhub.domain.model.Carta
@@ -7,6 +7,8 @@ import com.example.digitalhub.domain.model.Expansion
 import com.example.digitalhub.domain.model.Nivel
 import com.example.digitalhub.domain.model.RarezaCarta
 import com.example.digitalhub.domain.model.TipoCarta
+import com.example.digitalhub.domain.repository.BibliotecaRepository
+import com.example.digitalhub.domain.repository.CartaRepository
 
 class CartaRepositoryImpl(
     private val fakeDataSource : FakeCartaDataSource,

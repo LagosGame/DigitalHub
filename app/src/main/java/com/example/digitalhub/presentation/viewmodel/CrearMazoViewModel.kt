@@ -3,7 +3,7 @@ package com.example.digitalhub.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.digitalhub.domain.model.*
-import com.example.digitalhub.domain.repository.CartaRepositoryImpl
+import com.example.digitalhub.data.repository.CartaRepositoryImpl
 import com.example.digitalhub.domain.usecase.ActualizarMazoUseCase
 import com.example.digitalhub.domain.usecase.CrearMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
@@ -265,16 +265,6 @@ class CrearMazoViewModel(
             // Validaciones
             if (state.nombreMazo.isBlank()) {
                 _uiState.update { it.copy(errorMessage = "Deck name required") }
-                return@launch
-            }
-
-            if (state.totalHuevo < 4) {
-                _uiState.update { it.copy(errorMessage = "Need 4s Digi-Eggs") }
-                return@launch
-            }
-
-            if (state.totalNormales < 50) {
-                _uiState.update { it.copy(errorMessage = "Need 50 normal cards") }
                 return@launch
             }
 

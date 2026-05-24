@@ -1,7 +1,9 @@
-package com.example.digitalhub.domain.repository
+package com.example.digitalhub.data.repository
 
+import com.example.digitalhub.R
 import com.example.digitalhub.domain.model.AutentificaciónResultado
 import com.example.digitalhub.domain.model.User
+import com.example.digitalhub.domain.repository.AutentificacionRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -40,7 +42,7 @@ class AutentificacionRepositoryImpl(
                 username = userDoc.getString("username") ?: "User",
                 email = email,
                 iconoId = userDoc.getLong("iconoId")?.toInt()
-                    ?: com.example.digitalhub.R.drawable.ic_launcher_foreground,
+                    ?: R.drawable.ic_launcher_foreground,
                 cumpleanos = userDoc.getString("cumpleanos") ?: "",
                 colorFavorito = null,
                 biografia = userDoc.getString("biografia") ?: "",
@@ -58,7 +60,7 @@ class AutentificacionRepositoryImpl(
 
 
     override suspend fun loginGoogle(): AutentificaciónResultado {
-        TODO("Not yet implemented")
+        TODO("Sin implementar")
     }
 
     override suspend fun registrar(
@@ -90,7 +92,7 @@ class AutentificacionRepositoryImpl(
                 "id" to userId,
                 "username" to username,
                 "email" to email,
-                "iconoId" to com.example.digitalhub.R.drawable.ic_launcher_foreground,
+                "iconoId" to R.drawable.ic_launcher_foreground,
                 "cumpleanos" to "",
                 "colorFavorito" to null,
                 "biografia" to "",
@@ -106,7 +108,7 @@ class AutentificacionRepositoryImpl(
                 id = userId,
                 username = username,
                 email = email,
-                iconoId = com.example.digitalhub.R.drawable.ic_launcher_foreground,
+                iconoId = R.drawable.ic_launcher_foreground,
                 cumpleanos = "",
                 colorFavorito = null,
                 biografia = "",
@@ -134,7 +136,7 @@ class AutentificacionRepositoryImpl(
             id = firebaseUser.uid,
             username = firebaseUser.displayName ?: "User",
             email = firebaseUser.email ?: "",
-            iconoId = com.example.digitalhub.R.drawable.ic_launcher_foreground
+            iconoId = R.drawable.ic_launcher_foreground
         )
     }
 

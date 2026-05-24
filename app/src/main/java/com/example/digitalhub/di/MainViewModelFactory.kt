@@ -2,9 +2,9 @@ package com.example.digitalhub.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.digitalhub.domain.repository.AutentificacionRepositoryImpl
-import com.example.digitalhub.domain.repository.ReportRepositoryFirestoreImpl
-import com.example.digitalhub.domain.repository.UserRepositoryImpl
+import com.example.digitalhub.data.repository.AutentificacionRepositoryImpl
+import com.example.digitalhub.data.repository.ReportRepositoryFirestoreImpl
+import com.example.digitalhub.data.repository.UserRepositoryImpl
 import com.example.digitalhub.domain.usecase.EnviarReporteUseCase
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
 import com.example.digitalhub.presentation.viewmodel.MainViewModel

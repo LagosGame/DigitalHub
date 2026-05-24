@@ -51,8 +51,7 @@ fun BibliotecaContentido(
                 .padding(10.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            BotonX(onBack)
+            Spacer(modifier = Modifier.height(40.dp))
             Filtros(
                 uiState = uiState,
                 onAbrirSelector = onAbrirSelector,

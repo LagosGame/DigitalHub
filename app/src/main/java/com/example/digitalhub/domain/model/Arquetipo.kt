@@ -5,6 +5,6 @@ data class Arquetipo(
     val nombre: String,
     val tier: Tier,
     val color: ColorCarta,
-    val imagenId: Int,
+    val imagenId: String,
     val descripcion: String = ""
 )

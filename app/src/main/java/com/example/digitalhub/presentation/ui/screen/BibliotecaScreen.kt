@@ -14,12 +14,13 @@ import com.example.digitalhub.presentation.viewmodel.BibliotecaViewModel
 fun BibliotecaScreen(
     viewModel: BibliotecaViewModel = viewModel(factory = BibliotecaViewModelFactory()),
     onBack: () -> Unit,
-    onCartaClick: (String) -> Unit
+    onCartaClick: (String) -> Unit,
+    shouldReload: Boolean = false
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.recargarBiblioteca()
+        viewModel.recargarSinPerderFiltros()
     }
 
     BibliotecaContentido(
@@ -39,12 +40,4 @@ fun BibliotecaScreen(
         onBusquedaChange = viewModel::onBusquedaChange,
         onLimpiarFiltros = viewModel::limpiarFiltros
     )
-}
-@Preview
-@Composable
-fun BibliotecaPreview(
-){
-    BibliotecaScreen(
-        onBack = {}
-    ) { }
 }

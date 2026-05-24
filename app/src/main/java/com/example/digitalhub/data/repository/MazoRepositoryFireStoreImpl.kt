@@ -105,7 +105,83 @@ class MazoRepositoryFirestoreImpl(
         }
     }
 
+    override suspend fun añadirCartaAMazo(
+        userId: String,
+        mazoId: String,
+        cartaId: String,
+        esCartaHuevo: Boolean,
+        cantidad: Int
+    ): Result<Unit> {
+        return try {
+            val mazoDoc = firestore
+                .collection("mazos")
+                .document(mazoId)
+                .get()
+                .await()
 
+            if (!mazoDoc.exists()) {
+                return Result.failure(Exception("Deck not found"))
+            }
+
+            val mazoData = mazoDoc.data ?: return Result.failure(Exception("Deck data not available"))
+
+            if (mazoData["userId"] as? String != userId) {
+                return Result.failure(Exception("You don't have permission to change this deck"))
+            }
+
+            val mazo = parseMazo(mazoId, mazoData)
+
+            if (!esCartaHuevo && mazo.cartasNormales >= 50) {
+                return Result.failure(Exception("Deck already has 50 cards"))
+            }
+            if (esCartaHuevo && mazo.cartasHuevo >= 5) {
+                return Result.failure(Exception("Deck already has maximum Digi-Eggs (5)"))
+            }
+
+            val cartaExistenteEnMazo = mazo.cartas.find { it.cartaId == cartaId }
+            if (cartaExistenteEnMazo != null) {
+                val maxCopiasPermitidas = 4
+                if (cartaExistenteEnMazo.cantidad >= maxCopiasPermitidas) {
+                    return Result.failure(Exception("Maximum copies (${maxCopiasPermitidas}) reached for this card"))
+                }
+            }
+
+            val cartasActuales = mazo.cartas.toMutableList()
+            val cartasActualizadas = if (cartaExistenteEnMazo != null) {
+                val nuevaCantidad = cartaExistenteEnMazo.cantidad + cantidad
+
+                cartasActuales.map {
+                    if (it.cartaId == cartaId) {
+                        it.copy(cantidad = nuevaCantidad)
+                    } else {
+                        it
+                    }
+                }
+            } else {
+                cartasActuales + CartaEnMazo(cartaId, cantidad)
+            }
+
+            val nuevoMazo = mazo.copy(
+                cartas = cartasActualizadas,
+                cartasNormales = if (esCartaHuevo) mazo.cartasNormales else mazo.cartasNormales + cantidad,
+                cartasHuevo = if (esCartaHuevo) mazo.cartasHuevo + cantidad else mazo.cartasHuevo,
+                fechaModificacion = System.currentTimeMillis()
+            )
+
+            val mazoMap = mazoToMap(nuevoMazo)
+            firestore.collection("mazos")
+                .document(mazoId)
+                .set(mazoMap)
+                .await()
+
+            Result.success(Unit)
+
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
     private fun mazoToMap(mazo: Mazo): Map<String, Any?> {
         return hashMapOf(
             "nombre" to mazo.nombre,
@@ -151,13 +227,6 @@ class MazoRepositoryFirestoreImpl(
             estrategias = (data["estrategias"] as? List<*>)?.mapNotNull { parseEstrategia(it) } ?: emptyList(),
             cartasImportantes = (data["cartasImportantes"] as? List<*>)?.mapNotNull { it as? String } ?: emptyList(),
             estadisticas = parseEstadisticas(data["estadisticas"])
-        )
-    }
-
-    private fun cartaEnMazoToMap(carta: CartaEnMazo): Map<String, Any> {
-        return mapOf(
-            "cartaId" to carta.cartaId,
-            "cantidad" to carta.cantidad
         )
     }
 

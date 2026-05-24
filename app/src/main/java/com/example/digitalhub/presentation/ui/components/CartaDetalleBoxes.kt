@@ -51,7 +51,7 @@ fun CartaDetalleBoxes(
 
 ) {
 
-    val esCartaBlanca = carta.color.contains(ColorCarta.WHITE)
+    val esCartaBlanca = carta.color.contains(ColorCarta.WHITE) || carta.color.contains(ColorCarta.YELLOW) || carta.color.contains(ColorCarta.GREEN)
     val colorTexto = if (esCartaBlanca) Color.Black else Color.White
     val colorIcono = if (esCartaBlanca) Color.Black else Color.White
     val estilo = carta.color.firstOrNull() ?: ColorCarta.RAINBOW
@@ -64,7 +64,6 @@ fun CartaDetalleBoxes(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BotonX(onBack)
 
             IconButton(onClick = onToggleFavorita) {
                 Icon(
@@ -176,6 +175,7 @@ fun CartaDetalleBoxes(
                             text = "DP - ${carta.dp ?: "-"}",
                             textAlign = TextAlign.Center,
                             fontSize = 16.sp,
+                            color = colorTexto,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }

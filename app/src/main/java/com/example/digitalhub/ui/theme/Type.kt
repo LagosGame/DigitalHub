@@ -40,9 +40,6 @@ val DigitalFont = FontFamily(
 val Roboto = FontFamily(
     Font(R.font.robotoregular, FontWeight.Normal)
 )
-val KenyanCoffee = FontFamily(
-    Font(R.font.kenyancoffeergit, FontWeight.Normal)
-)
 val Kenyan = FontFamily(
     Font(R.font.kenyan, FontWeight.Normal)
 )

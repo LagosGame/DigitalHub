@@ -1,7 +1,9 @@
-package com.example.digitalhub.domain.repository
+package com.example.digitalhub.data.repository
 
+import com.example.digitalhub.R
 import com.example.digitalhub.domain.model.ColorCarta
 import com.example.digitalhub.domain.model.User
+import com.example.digitalhub.domain.repository.UserRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -19,7 +21,7 @@ class UserRepositoryImpl(
                 username = userDoc.getString("username") ?: "User",
                 email = userDoc.getString("email") ?: "",
                 iconoId = userDoc.getLong("iconoId")?.toInt()
-                    ?: com.example.digitalhub.R.drawable.ic_launcher_foreground,
+                    ?: R.drawable.ic_launcher_foreground,
                 cumpleanos = userDoc.getString("cumpleanos") ?: "",
                 colorFavorito = userDoc.getString("colorFavorito")?.let {
                     try {

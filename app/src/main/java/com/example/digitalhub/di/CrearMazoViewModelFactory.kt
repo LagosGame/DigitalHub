@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.digitalhub.data.local.FakeCartaDataSource
 import com.example.digitalhub.data.repository.BibliotecaRepositoryImpl
 import com.example.digitalhub.data.repository.MazoRepositoryFirestoreImpl
-import com.example.digitalhub.domain.repository.AutentificacionRepositoryImpl
-import com.example.digitalhub.domain.repository.CartaRepositoryImpl
-import com.example.digitalhub.domain.repository.UserRepositoryImpl
+import com.example.digitalhub.data.repository.AutentificacionRepositoryImpl
+import com.example.digitalhub.data.repository.CartaRepositoryImpl
+import com.example.digitalhub.data.repository.UserRepositoryImpl
 import com.example.digitalhub.domain.usecase.ActualizarMazoUseCase
 import com.example.digitalhub.domain.usecase.CrearMazoUseCase
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase

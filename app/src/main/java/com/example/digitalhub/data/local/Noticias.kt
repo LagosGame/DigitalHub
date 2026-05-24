@@ -1,6 +1,6 @@
 package com.example.digitalhub.data.local
 
-import com.example.digitalhub.data.model.Noticia
+import com.example.digitalhub.domain.model.Noticia
 import com.example.digitalhub.R
 
 val noticias = listOf(

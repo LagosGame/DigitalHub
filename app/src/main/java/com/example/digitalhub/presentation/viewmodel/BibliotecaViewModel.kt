@@ -3,7 +3,7 @@ package com.example.digitalhub.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.digitalhub.domain.model.*
-import com.example.digitalhub.domain.repository.CartaRepositoryImpl
+import com.example.digitalhub.data.repository.CartaRepositoryImpl
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
 import com.example.digitalhub.presentation.ui.state.BibliotecaUiState
 import com.example.digitalhub.presentation.ui.state.Selector
@@ -229,6 +229,39 @@ class BibliotecaViewModel(
                 busqueda = "",
                 cartas = todasLasCartas
             )
+        }
+    }
+    fun recargarSinPerderFiltros() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            try {
+                val user = getCurrentUserUseCase()
+                currentUserId = user?.id
+
+                if (currentUserId == null) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "User not known"
+                        )
+                    }
+                    return@launch
+                }
+
+                todasLasCartas = cartaRepository.getCartasConBiblioteca(currentUserId!!)
+                _uiState.update { it.copy(isLoading = false) }
+                aplicarFiltros()
+
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Error: ${e.message}"
+                    )
+                }
+            }
         }
     }
 }

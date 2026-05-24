@@ -1,8 +1,8 @@
-package com.example.digitalhub.domain.repository
+package com.example.digitalhub.data.repository
 
-import com.example.digitalhub.data.local.FakeComentarioDataSource
 import com.example.digitalhub.domain.model.Comentario
 import com.example.digitalhub.domain.model.User
+import com.example.digitalhub.domain.repository.ComentarioRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await

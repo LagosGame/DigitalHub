@@ -12,8 +12,6 @@ class GetCurrentUserUseCase(
      suspend operator fun invoke(): User? {
          val currentAuthUser = authRepository.getCurrentUser()
          val userId = currentAuthUser?.id ?: return null
-
-
          return userRepository.getUserById(userId)
     }
 }

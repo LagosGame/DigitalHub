@@ -53,14 +53,6 @@ fun ListaMazosContentido(
                     .background(Color(0xFF1565C0))
                     .padding(vertical = 60.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp)
-                ) {
-                    BotonX(onBack)
-                }
-
                 Text(
                     text = "DECK LIST",
                     fontSize = 32.sp,

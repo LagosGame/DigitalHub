@@ -3,7 +3,7 @@ package com.example.digitalhub.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.digitalhub.data.local.FakeArquetipoDataSource
-import com.example.digitalhub.domain.repository.ArquetipoRepositoryImpl
+import com.example.digitalhub.data.repository.ArquetipoRepositoryImpl
 import com.example.digitalhub.domain.usecase.GetArquetiposUseCase
 import com.example.digitalhub.presentation.viewmodel.TierListViewModel
 

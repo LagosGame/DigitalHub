@@ -9,4 +9,12 @@ interface MazoRpository {
     suspend fun crearMazo(mazo: Mazo): Result<Unit>
     suspend fun actualizarMazo(mazo: Mazo): Result<Unit>
     suspend fun eliminarMazo(id: String): Result<Unit>
+    suspend fun añadirCartaAMazo(
+        userId: String,
+        mazoId: String,
+        cartaId: String,
+        esCartaHuevo: Boolean,
+        cantidad: Int = 1
+    ): Result<Unit>
+
 }

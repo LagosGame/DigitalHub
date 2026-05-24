@@ -96,13 +96,11 @@ fun NavegacionApp(
 
         composable("biblioteca") {
             BibliotecaScreen(
-                onBack = {
-                    navController.popBackStack()
-                },
+                onBack = { navController.popBackStack() },
                 onCartaClick = { cartaId ->
                     navController.navigate("carta/$cartaId")
-
-                }
+                },
+                shouldReload = false
             )
         }
         composable("construir_mazo") {

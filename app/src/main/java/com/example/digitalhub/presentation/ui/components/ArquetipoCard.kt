@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.digitalhub.data.local.FakeCartaDataSource
 import com.example.digitalhub.domain.model.Arquetipo
 import com.example.digitalhub.domain.model.ColorCarta
 import com.example.digitalhub.ui.theme.Kenyan
@@ -28,6 +29,9 @@ import com.example.digitalhub.ui.theme.Kenyan
 fun ArquetipoCard(
     arquetipo: Arquetipo,
 ) {
+    val imagenId = FakeCartaDataSource().getCartas().find {
+        it.id == arquetipo.imagenId
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,14 +53,16 @@ fun ArquetipoCard(
             modifier = Modifier.weight(1f)
         )
 
-        Image(
-            painter = painterResource(arquetipo.imagenId),
-            contentDescription = arquetipo.nombre,
-            modifier = Modifier
-                .size(80.dp)
-                .border(2.dp, Color.Black, RoundedCornerShape(4.dp)),
-            contentScale = ContentScale.Crop
-        )
+        imagenId?.let { carta ->
+            Image(
+                painter = painterResource(carta.imagenId),
+                contentDescription = carta.nombre,
+                modifier = Modifier
+                    .size(80.dp)
+                    .border(2.dp, Color.Black, RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 @Composable

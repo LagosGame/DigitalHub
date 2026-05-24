@@ -79,18 +79,7 @@ fun PerfilContentido(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    BotonX(onBack)
-                }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Box(
                     modifier = Modifier
