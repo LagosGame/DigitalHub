@@ -18,18 +18,16 @@ import com.example.digitalhub.ui.theme.Kenyan
 
 @Composable
 fun ColorPunto(colorCarta: ColorCarta) {
+    val colorBorde = when (colorCarta) {
+        ColorCarta.BLACK -> Color.White
+        else -> Color.Black
+    }
+
     Box(
         modifier = Modifier
             .size(32.dp)
-            .background(
-                color = colorCarta.toColor(),
-                shape = CircleShape
-            )
-            .border(
-                width = 2.dp,
-                color = Color.Black,
-                shape = CircleShape
-            )
+            .background(color = colorCarta.toColor(), shape = CircleShape)
+            .border(width = 2.dp, color = colorBorde, shape = CircleShape)
     )
 }
 @Composable

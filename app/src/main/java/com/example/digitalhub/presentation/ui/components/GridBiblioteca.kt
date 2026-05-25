@@ -13,13 +13,15 @@ import com.example.digitalhub.domain.model.Carta
 @Composable
 fun GridBiblioteca(
     cartas: List<Carta>,
+    columnas: Int = 4,
     modifier: Modifier = Modifier,
+    bottomPadding: Int = 180,
     onCartaClick:(Carta)-> Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(4),
+        columns = GridCells.Fixed(columnas),
         modifier = modifier.padding(8.dp),
-        contentPadding = PaddingValues(bottom = 180.dp)
+        contentPadding = PaddingValues(bottom = bottomPadding.dp)
     ) {
         items(cartas) { carta ->
             CartaItem(

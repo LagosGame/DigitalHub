@@ -3,6 +3,7 @@ package com.example.digitalhub.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.digitalhub.domain.model.ColorCarta
+import com.example.digitalhub.domain.usecase.GetAllMazosUseCase
 import com.example.digitalhub.domain.usecase.GetCartasUseCase
 import com.example.digitalhub.domain.usecase.GetCurrentUserUseCase
 import com.example.digitalhub.domain.usecase.GetMazosUseCase
@@ -21,6 +22,7 @@ class PerfilViewModel(
     private val getMazosUseCase: GetMazosUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getCartasUseCase: GetCartasUseCase,
+    private val getAllMazosUseCase: GetAllMazosUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val userId: String?
@@ -43,9 +45,14 @@ class PerfilViewModel(
                 } else {
                     getCurrentUserUseCase()
                 }
-                val todosMazos = getMazosUseCase()
+                val mazosPropios = if (userId != null) {
+                    getAllMazosUseCase().filter { it.userId == usuario?.id }
+                } else {
+                    getMazosUseCase()
+                }
+
                 val todasLasCartas = getCartasUseCase()
-                val mazosPropios = todosMazos.filter { it.userId == usuario?.id }
+
                 _uiState.update {
                     it.copy(
                         usuario = usuario,

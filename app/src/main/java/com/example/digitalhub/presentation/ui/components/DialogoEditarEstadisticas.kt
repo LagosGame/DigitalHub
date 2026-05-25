@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -35,14 +38,13 @@ fun DialogoEditarEstadisticas(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(
-                text = "Edit stats",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Text(text = "Edit stats", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         },
         text = {
             Column(
+                modifier = Modifier
+                    .heightIn(max = 400.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 SliderEstadistica("Attack", ataque) { ataque = it }
@@ -63,8 +65,9 @@ fun DialogoEditarEstadisticas(
                         recuperacion = recuperacion
                     )
                 )
-                onDismiss()
-            }) {
+                onDismiss() }
+            )
+            {
                 Text("Save")
             }
         },

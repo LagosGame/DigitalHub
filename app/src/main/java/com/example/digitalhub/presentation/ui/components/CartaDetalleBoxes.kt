@@ -1,5 +1,6 @@
 package com.example.digitalhub.presentation.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,256 +53,395 @@ fun CartaDetalleBoxes(
     onAddToDeck: () -> Unit
 
 ) {
-
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val esCartaBlanca = carta.color.contains(ColorCarta.WHITE) || carta.color.contains(ColorCarta.YELLOW) || carta.color.contains(ColorCarta.GREEN)
     val colorTexto = if (esCartaBlanca) Color.Black else Color.White
     val colorIcono = if (esCartaBlanca) Color.Black else Color.White
     val estilo = carta.color.firstOrNull() ?: ColorCarta.RAINBOW
-    Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp)) {
-        //Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+    if (isLandscape) {
 
-            IconButton(onClick = onToggleFavorita) {
-                Icon(
-                    imageVector = if (carta.esFav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription = "Favorita",
-                    tint = if (carta.esFav) Color.Red else Color.Gray,
-                    modifier = Modifier.scale(1.5f)
+        Row(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                IconButton(onClick = onToggleFavorita) {
+                    Icon(
+                        imageVector = if (carta.esFav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = "Favorita",
+                        tint = if (carta.esFav) Color.Red else Color.Gray,
+                        modifier = Modifier.scale(1.5f)
+                    )
+                }
+                Image(
+                    painter = painterResource(carta.imagenId),
+                    contentDescription = carta.nombre,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(8.dp),
+                    contentScale = ContentScale.Fit,
+                    colorFilter = if (carta.cantidadEnBiblioteca == 0) {
+                        ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
+                    } else null
                 )
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    BoxInfoCarta(
+                        colorCarta = estilo,
+                        modifier = Modifier.fillMaxWidth().height(60.dp)
+                    ) {
+                        Text(
+                            text = "${carta.nombre} | ${carta.id} | ${carta.rareza.letra}",
+                            textAlign = TextAlign.Center,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = colorTexto,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        BoxInfoCarta(colorCarta = estilo, modifier = Modifier.weight(1f).height(60.dp)) {
+                            Text(text = "Cost - ${carta.coste}", textAlign = TextAlign.Center, fontSize = 16.sp, color = colorTexto, modifier = Modifier.fillMaxWidth())
+                        }
+                        BoxInfoCarta(modifier = Modifier.weight(1f).height(60.dp), colorCarta = estilo) {
+                            Text(text = "Evo - ${carta.costeEvolucion ?: "-"}", textAlign = TextAlign.Center, fontSize = 16.sp, color = colorTexto, modifier = Modifier.fillMaxWidth())
+                        }
+                        BoxInfoCarta(modifier = Modifier.weight(1f).height(60.dp), colorCarta = estilo) {
+                            Text(text = "DP - ${carta.dp ?: "-"}", textAlign = TextAlign.Center, fontSize = 16.sp, color = colorTexto, modifier = Modifier.fillMaxWidth())
+                        }
+                    }
+
+                    BoxInfoCarta(modifier = Modifier.fillMaxWidth().height(50.dp), colorCarta = estilo) {
+                        Text(
+                            text = buildString {
+                                append(carta.nivel?.etiqueta ?: "N/A")
+                                if (carta.rango != null) append(" | ${carta.rango}")
+                                if (carta.atributo != null) append(" | ${carta.atributo}")
+                                if (carta.trait != null) append(" | ${carta.trait}")
+                            },
+                            textAlign = TextAlign.Center,
+                            fontSize = 16.sp,
+                            color = colorTexto,
+                            modifier = Modifier.fillMaxWidth(),
+                            maxLines = 2
+                        )
+                    }
+
+                    //Texto/Efecto
+                    if (!carta.texto.isNullOrBlank()) {
+                        BoxInfoCarta(modifier = Modifier.fillMaxWidth(), colorCarta = estilo) {
+                            Text(text = carta.texto, textAlign = TextAlign.Justify, fontSize = 14.sp, color = colorTexto, modifier = Modifier.fillMaxWidth())
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    //Cantidad
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        BotonMazo(
+                            tipo = TipoBoton.COLOR_CARTA,
+                            colorCarta = carta.color.firstOrNull(),
+                            texto = "Add to deck",
+                            enabled = carta.cantidadEnBiblioteca > 0,
+                            onClick = onAddToDeck
+                        )
+                        BoxInfoCarta(colorCarta = estilo, modifier = Modifier.width(220.dp).height(50.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(text = "Add to Library", fontWeight = FontWeight.Bold, color = colorTexto, fontSize = 16.sp)
+                                Row(horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(onClick = onDecrementarCantidad, enabled = carta.cantidadEnBiblioteca > 0, modifier = Modifier.size(28.dp)) {
+                                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "-", tint = if (carta.cantidadEnBiblioteca > 0) colorIcono else Color.Gray, modifier = Modifier.size(18.dp))
+                                    }
+                                    Text(text = "${carta.cantidadEnBiblioteca}", color = colorTexto, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                                    IconButton(onClick = onIncrementarCantidad, enabled = carta.cantidadEnBiblioteca < 4, modifier = Modifier.size(28.dp)) {
+                                        Icon(Icons.Default.KeyboardArrowUp, contentDescription = "+", tint = if (carta.cantidadEnBiblioteca < 4) colorIcono else Color.Gray, modifier = Modifier.size(18.dp))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        //Imagen
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(carta.imagenId),
-                contentDescription = carta.nombre,
-                modifier = Modifier.fillMaxSize()
-                    .padding(8.dp),
-                contentScale = ContentScale.Fit,
-                // Blandca y negra si no la tienes
-                colorFilter = if (carta.cantidadEnBiblioteca == 0) {
-                    ColorFilter.colorMatrix(
-                        ColorMatrix().apply { setToSaturation(0f) }
-                    )
-                } else {
-                    null
-                }
-            )
-        }
+    } else {
+        Column(modifier = Modifier.fillMaxSize().padding(top = 20.dp)) {
+            //Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
-        //Info
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
-                .padding(24.dp)
-        ) {
-            Column(
+                IconButton(onClick = onToggleFavorita) {
+                    Icon(
+                        imageVector = if (carta.esFav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = "Favorita",
+                        tint = if (carta.esFav) Color.Red else Color.Gray,
+                        modifier = Modifier.scale(1.5f)
+                    )
+                }
+            }
+
+            //Imagen
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(carta.imagenId),
+                    contentDescription = carta.nombre,
+                    modifier = Modifier.fillMaxSize()
+                        .padding(8.dp),
+                    contentScale = ContentScale.Fit,
+                    // Blandca y negra si no la tienes
+                    colorFilter = if (carta.cantidadEnBiblioteca == 0) {
+                        ColorFilter.colorMatrix(
+                            ColorMatrix().apply { setToSaturation(0f) }
+                        )
+                    } else {
+                        null
+                    }
+                )
+            }
+
+            //Info
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(24.dp)
             ) {
-                //Nombre e ID
-                BoxInfoCarta(
-                    colorCarta = estilo,
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = "${carta.nombre} | ${carta.id} | ${carta.rareza.letra}",
-                        textAlign = TextAlign.Center,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = colorTexto,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                //Coste,Evo,DP
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                    //Nombre e ID
                     BoxInfoCarta(
                         colorCarta = estilo,
                         modifier = Modifier
-                            .weight(1f)
-                            .height(60.dp),
+                            .fillMaxWidth()
+                            .height(60.dp)
                     ) {
                         Text(
-                            text = "Cost - ${carta.coste}",
+                            text = "${carta.nombre} | ${carta.id} | ${carta.rareza.letra}",
                             textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
                             color = colorTexto,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
 
-                    BoxInfoCarta(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(60.dp),
-                        colorCarta = estilo
-                    ) {
-                        Text(
-                            text = "Evo - ${carta.costeEvolucion ?: "-"}",
-                            textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
-                            color = colorTexto,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-
-                    BoxInfoCarta(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(60.dp),
-                        colorCarta = estilo
-                    ) {
-                        Text(
-                            text = "DP - ${carta.dp ?: "-"}",
-                            textAlign = TextAlign.Center,
-                            fontSize = 16.sp,
-                            color = colorTexto,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
-
-                //Nivel y Atributo
-                BoxInfoCarta(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    colorCarta = estilo
-                ) {
-                    Text(
-                        text = buildString {
-                            append(carta.nivel?.etiqueta ?: "N/A")
-                            if (carta.rango != null) {
-                                append(" | ${carta.rango}")
-                            }
-                            if (carta.atributo != null) {
-                                append(" | ${carta.atributo}")
-                            }
-                            if (carta.trait != null) {
-                                append(" | ${carta.trait}")
-                            }
-                        },
-                        textAlign = TextAlign.Center,
-                        fontSize = 16.sp,
-                        color = colorTexto,
+                    //Coste,Evo,DP
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        maxLines = 2
-                    )
-                }
-
-                //Texto/Efecto
-                if (!carta.texto.isNullOrBlank()) {
-                    BoxInfoCarta(
-                        modifier = Modifier.fillMaxWidth(),
-                        colorCarta = estilo
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            text = carta.texto,
-                            textAlign = TextAlign.Justify,
-                            fontSize = 14.sp,
-                            color = colorTexto,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                //Cantidad
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    //"Añadir a mazo"
-                    BotonMazo(
-                        tipo = TipoBoton.COLOR_CARTA,
-                        colorCarta = carta.color.firstOrNull(),
-                        texto = "Add to deck",
-                        enabled = carta.cantidadEnBiblioteca > 0,
-                        onClick = onAddToDeck
-                    )
-
-                    // Box con control de biblioteca
-                    BoxInfoCarta(
-                        colorCarta = estilo,
-                        modifier = Modifier
-                            .width(220.dp)
-                            .height(50.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        BoxInfoCarta(
+                            colorCarta = estilo,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(60.dp),
                         ) {
                             Text(
-                                text = "Add to Library",
-                                fontWeight = FontWeight.Bold,
+                                text = "Cost - ${carta.coste}",
+                                textAlign = TextAlign.Center,
+                                fontSize = 16.sp,
                                 color = colorTexto,
-                                fontSize = 16.sp
+                                modifier = Modifier.fillMaxWidth()
                             )
+                        }
 
-                            //
+                        BoxInfoCarta(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(60.dp),
+                            colorCarta = estilo
+                        ) {
+                            Text(
+                                text = "Evo - ${carta.costeEvolucion ?: "-"}",
+                                textAlign = TextAlign.Center,
+                                fontSize = 16.sp,
+                                color = colorTexto,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+
+                        BoxInfoCarta(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(60.dp),
+                            colorCarta = estilo
+                        ) {
+                            Text(
+                                text = "DP - ${carta.dp ?: "-"}",
+                                textAlign = TextAlign.Center,
+                                fontSize = 16.sp,
+                                color = colorTexto,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+
+                    //Nivel y Atributo
+                    BoxInfoCarta(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        colorCarta = estilo
+                    ) {
+                        Text(
+                            text = buildString {
+                                append(carta.nivel?.etiqueta ?: "N/A")
+                                if (carta.rango != null) {
+                                    append(" | ${carta.rango}")
+                                }
+                                if (carta.atributo != null) {
+                                    append(" | ${carta.atributo}")
+                                }
+                                if (carta.trait != null) {
+                                    append(" | ${carta.trait}")
+                                }
+                            },
+                            textAlign = TextAlign.Center,
+                            fontSize = 16.sp,
+                            color = colorTexto,
+                            modifier = Modifier.fillMaxWidth(),
+                            maxLines = 2
+                        )
+                    }
+
+                    //Texto/Efecto
+                    if (!carta.texto.isNullOrBlank()) {
+                        BoxInfoCarta(
+                            modifier = Modifier.fillMaxWidth(),
+                            colorCarta = estilo
+                        ) {
+                            Text(
+                                text = carta.texto,
+                                textAlign = TextAlign.Justify,
+                                fontSize = 14.sp,
+                                color = colorTexto,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    //Cantidad
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        //"Añadir a mazo"
+                        BotonMazo(
+                            tipo = TipoBoton.COLOR_CARTA,
+                            colorCarta = carta.color.firstOrNull(),
+                            texto = "Add to deck",
+                            enabled = carta.cantidadEnBiblioteca > 0,
+                            onClick = onAddToDeck
+                        )
+
+                        // Box con control de biblioteca
+                        BoxInfoCarta(
+                            colorCarta = estilo,
+                            modifier = Modifier
+                                .width(220.dp)
+                                .height(50.dp)
+                        ) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                //
-                                IconButton(
-                                    onClick = onDecrementarCantidad,
-                                    enabled = carta.cantidadEnBiblioteca > 0,
-                                    modifier = Modifier.size(28.dp)
-                                ) {
-                                    Icon(
-                                        Icons.Default.KeyboardArrowDown,
-                                        contentDescription = "-",
-                                        tint = if (carta.cantidadEnBiblioteca > 0) colorIcono else Color.Gray,
-                                        modifier = Modifier.size(18.dp)
-                                    )
-                                }
-
-                                //Cantidad
                                 Text(
-                                    text = "${carta.cantidadEnBiblioteca}",
+                                    text = "Add to Library",
+                                    fontWeight = FontWeight.Bold,
                                     color = colorTexto,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontSize = 16.sp
                                 )
 
                                 //
-                                IconButton(
-                                    onClick = onIncrementarCantidad,
-                                    enabled = carta.cantidadEnBiblioteca < 4,
-                                    modifier = Modifier.size(28.dp)
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Icon(
-                                        Icons.Default.KeyboardArrowUp,
-                                        contentDescription = "+",
-                                        tint = if (carta.cantidadEnBiblioteca < 4) colorIcono else Color.Gray,
-                                        modifier = Modifier.size(18.dp)
+                                    //
+                                    IconButton(
+                                        onClick = onDecrementarCantidad,
+                                        enabled = carta.cantidadEnBiblioteca > 0,
+                                        modifier = Modifier.size(28.dp)
+                                    ) {
+                                        Icon(
+                                            Icons.Default.KeyboardArrowDown,
+                                            contentDescription = "-",
+                                            tint = if (carta.cantidadEnBiblioteca > 0) colorIcono else Color.Gray,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                    }
+
+                                    //Cantidad
+                                    Text(
+                                        text = "${carta.cantidadEnBiblioteca}",
+                                        color = colorTexto,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
                                     )
+
+                                    //
+                                    IconButton(
+                                        onClick = onIncrementarCantidad,
+                                        enabled = carta.cantidadEnBiblioteca < 4,
+                                        modifier = Modifier.size(28.dp)
+                                    ) {
+                                        Icon(
+                                            Icons.Default.KeyboardArrowUp,
+                                            contentDescription = "+",
+                                            tint = if (carta.cantidadEnBiblioteca < 4) colorIcono else Color.Gray,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                    }
                                 }
                             }
                         }

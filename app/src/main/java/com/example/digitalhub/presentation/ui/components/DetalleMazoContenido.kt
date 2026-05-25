@@ -72,7 +72,6 @@ fun DetalleMazoContentido(
                             .background(Color(0xFF1565C0))
                             .padding(vertical = 20.dp)
                     ) {
-                        BotonX(onBack)
 
                         Text(
                             text = "GUIDES & STRATEGIES",
@@ -120,56 +119,6 @@ fun DetalleMazoContentido(
                     }
                 }
             }
-        }
-        //Todo vacio porque lo hac eel viewmodel//
-        if (uiState.mostrarDialogoDescripcion) {
-            DialogoEditarDescripcion(
-                descripcionActual = uiState.descripcion,
-                onConfirm = {},
-                onDismiss = {}
-            )
-        }
-
-        if (uiState.mostrarDialogoEstrategia) {
-            val cartasDelMazo = uiState.mazo?.cartas?.mapNotNull { cartaEnMazo ->
-                uiState.todasLasCartas.find { it.id == cartaEnMazo.cartaId }
-            } ?: emptyList()
-
-            DialogoAñadirEstrategia(
-                cartasDelMazo = cartasDelMazo,
-                onConfirm = { titulo, cartasIds ->
-
-                },
-                onDismiss = {}
-            )
-        }
-
-        if (uiState.mostrarDialogoCartasImportantes) {
-            val cartasDelMazo = uiState.mazo?.cartas?.mapNotNull { cartaEnMazo ->
-                uiState.todasLasCartas.find { it.id == cartaEnMazo.cartaId }
-            } ?: emptyList()
-
-            DialogoElegirPortada(
-                cartas = cartasDelMazo,
-                onCartaSeleccionada = { carta ->
-                },
-                onDismiss = {}
-            )
-        }
-
-        if (uiState.mostrarDialogoTags) {
-            DialogoAñadirTag(
-                onConfirm = {},
-                onDismiss = {}
-            )
-        }
-
-        if (uiState.mostrarDialogoEstadisticas) {
-            DialogoEditarEstadisticas(
-                estadisticasActuales = uiState.estadisticas,
-                onConfirm = {},
-                onDismiss = {}
-            )
         }
     }
 }

@@ -2,11 +2,13 @@ package com.example.digitalhub.presentation.ui.components
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,128 +48,254 @@ fun HomeContentido(
     onCerrarDialogo: () -> Unit,
 ) {
     val context = LocalContext.current
-
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     FondoPrincipal()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(30.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        //Slider
-        Box(
+    if (isLandscape) {
+        Row(
             modifier = Modifier
-                .height(300.dp)
-                .width(350.dp)
-                .background(Color.Blue.copy(alpha = 0.4f))
-                .padding(20.dp),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            SliderNoticias(
-                noticias = noticias,
-                indice = uiState.indiceSlider,
-                onCambiar = onCambiarIndice,
-                onClickImagen = { url ->
-                    abrirUrl(context, url)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp)
+                        .background(Color.Blue.copy(alpha = 0.4f))
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    SliderNoticias(
+                        noticias = noticias,
+                        indice = uiState.indiceSlider,
+                        onCambiar = onCambiarIndice,
+                        onClickImagen = { url -> abrirUrl(context, url) }
+                    )
+                    IndicadorSlider(
+                        total = noticias.size,
+                        indice = uiState.indiceSlider,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
                 }
-            )
+            }
 
-            IndicadorSlider(
-                total = noticias.size,
-                indice = uiState.indiceSlider,
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    ,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                BotonesDentro(
+                    text = "Library",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(50.dp),
+                    fontSize = 26.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onBiblioteca
+                )
+
+                BotonesDentro(
+                    text = "Build deck",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(50.dp),
+                    fontSize = 26.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onConstruir
+                )
+
+                BotonesDentro(
+                    text = "Deck list",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(50.dp),
+                    fontSize = 26.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onLista
+                )
+
+                BotonesDentro(
+                    text = "Profile",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(50.dp),
+                    fontSize = 26.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onPerfil
+                )
+            }
         }
-
-        //Botones navegación
         Column(
             modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .padding(top = 400.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .padding(15.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End
         ) {
-            BotonesDentro(
-                text = "Library",
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(60.dp),
-                fontSize = 32.sp,
-                fontFamily = Kenyan,
-                fontWeight = FontWeight.Normal,
-                isEnabled = true,
-                onClick = onBiblioteca
-            )
-
-            BotonesDentro(
-                text = "Build deck",
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(60.dp),
-                fontSize = 32.sp,
-                fontFamily = Kenyan,
-                fontWeight = FontWeight.Normal,
-                isEnabled = true,
-                onClick = onConstruir
-            )
-
-            BotonesDentro(
-                text = "Deck list",
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(60.dp),
-                fontSize = 32.sp,
-                fontFamily = Kenyan,
-                fontWeight = FontWeight.Normal,
-                isEnabled = true,
-                onClick = onLista
-            )
-
-            BotonesDentro(
-                text = "Profile",
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(60.dp),
-                fontSize = 32.sp,
-                fontFamily = Kenyan,
-                fontWeight = FontWeight.Normal,
-                isEnabled = true,
-                onClick = onPerfil
+            IconButton(
+                onClick = onReportarError,
+                modifier = Modifier.background(
+                    color = Color.White,
+                    shape = CircleShape
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Build,
+                    contentDescription = "Errors",
+                    tint = Color.Black
+                )
+            }
+        }
+        if (uiState.mostrarDialogoReportar) {
+            DialogoReportarError(
+                mensajeError = uiState.mensajeError,
+                onMensajeChange = onMensajeChange,
+                onEnviar = onEnviarReporte,
+                onCancelar = onCerrarDialogo
             )
         }
-    }
 
-    //Botón de errores
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.End
-    ) {
-        IconButton(
-            onClick = onReportarError,
-            modifier = Modifier.background(
-                color = Color.White,
-                shape = CircleShape
-            )
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(30.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
-            Icon(
-                imageVector = Icons.Filled.Build,
-                contentDescription = "Errors",
-                tint = Color.Black
+            //Slider
+            Box(
+                modifier = Modifier
+                    .height(300.dp)
+                    .width(350.dp)
+                    .background(Color.Blue.copy(alpha = 0.4f))
+                    .padding(20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                SliderNoticias(
+                    noticias = noticias,
+                    indice = uiState.indiceSlider,
+                    onCambiar = onCambiarIndice,
+                    onClickImagen = { url ->
+                        abrirUrl(context, url)
+                    }
+                )
+
+                IndicadorSlider(
+                    total = noticias.size,
+                    indice = uiState.indiceSlider,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
+            }
+
+            //Botones navegación
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(top = 400.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                BotonesDentro(
+                    text = "Library",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(60.dp),
+                    fontSize = 32.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onBiblioteca
+                )
+
+                BotonesDentro(
+                    text = "Build deck",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(60.dp),
+                    fontSize = 32.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onConstruir
+                )
+
+                BotonesDentro(
+                    text = "Deck list",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(60.dp),
+                    fontSize = 32.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onLista
+                )
+
+                BotonesDentro(
+                    text = "Profile",
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(60.dp),
+                    fontSize = 32.sp,
+                    fontFamily = Kenyan,
+                    fontWeight = FontWeight.Normal,
+                    isEnabled = true,
+                    onClick = onPerfil
+                )
+            }
+        }
+
+        //Botón de errores
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End
+        ) {
+            IconButton(
+                onClick = onReportarError,
+                modifier = Modifier.background(
+                    color = Color.White,
+                    shape = CircleShape
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Build,
+                    contentDescription = "Errors",
+                    tint = Color.Black
+                )
+            }
+        }
+        if (uiState.mostrarDialogoReportar) {
+            DialogoReportarError(
+                mensajeError = uiState.mensajeError,
+                onMensajeChange = onMensajeChange,
+                onEnviar = onEnviarReporte,
+                onCancelar = onCerrarDialogo
             )
         }
-    }
-    if (uiState.mostrarDialogoReportar) {
-        DialogoReportarError(
-            mensajeError = uiState.mensajeError,
-            onMensajeChange = onMensajeChange,
-            onEnviar = onEnviarReporte,
-            onCancelar = onCerrarDialogo
-        )
     }
 }
 

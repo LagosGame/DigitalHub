@@ -1,12 +1,16 @@
 package com.example.digitalhub.presentation.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -15,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.digitalhub.presentation.ui.state.EstadisticasEdit
 import com.example.digitalhub.presentation.ui.state.VerMazoUiState
 
@@ -32,33 +38,23 @@ fun VerMazoContentido(
     onCancelarCopia: () -> Unit,
     onComentariosClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     Box(modifier = Modifier.fillMaxSize()) {
         FondoPrincipal()
 
         when {
             uiState.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.White)
                 }
             }
-
             uiState.errorMessage != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = uiState.errorMessage,
-                        color = Color.Red,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = uiState.errorMessage, color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
-
             uiState.mazo != null -> {
                 val mazo = uiState.mazo
                 val cartasDelMazo = uiState.todasLasCartas.filter { carta ->
@@ -67,42 +63,85 @@ fun VerMazoContentido(
                 val cartasImportantes = uiState.todasLasCartas.filter { carta ->
                     carta.id in mazo.cartasImportantes
                 }
+                val estadisticas = EstadisticasEdit(
+                    ataque = mazo.estadisticas.ataque,
+                    defensa = mazo.estadisticas.defensa,
+                    consistencia = mazo.estadisticas.consistencia,
+                    versatilidad = mazo.estadisticas.versatilidad,
+                    recuperacion = mazo.estadisticas.recuperacion
+                )
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    ZonaMazoVista(
-                        mazo = mazo,
-                        cartasDelMazo = cartasDelMazo,
-                        onBack = onBack,
-                        usuario = uiState.usuario,
-                        onAbrirDialogoCopiar = onAbrirDialogoCopiar,
-                        onPerfilAutor = { onPerfilAutor(mazo.userId) }
-                    )
-                    Box(
+                if (isLandscape) {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            ZonaMazoVista(
+                                mazo = mazo,
+                                cartasDelMazo = cartasDelMazo,
+                                onBack = onBack,
+                                usuario = uiState.usuario,
+                                onAbrirDialogoCopiar = onAbrirDialogoCopiar,
+                                onPerfilAutor = { onPerfilAutor(mazo.userId) }
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(2.dp)
+                                .fillMaxHeight()
+                                .background(Color.Black)
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            SeccionDetallesVista(
+                                descripcion = mazo.descripcion,
+                                estrategias = mazo.estrategias,
+                                cartasImportantes = cartasImportantes,
+                                estadisticas = estadisticas,
+                                todasLasCartas = uiState.todasLasCartas,
+                                onComentariosClick = onComentariosClick
+                            )
+                        }
+                    }
+
+                } else {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(4.dp)
-                            .background(Color.Black)
-                    )
-                    SeccionDetallesVista(
-                        descripcion = mazo.descripcion,
-                        estrategias = mazo.estrategias,
-                        cartasImportantes = cartasImportantes,
-                        estadisticas = EstadisticasEdit(
-                            ataque = mazo.estadisticas.ataque,
-                            defensa = mazo.estadisticas.defensa,
-                            consistencia = mazo.estadisticas.consistencia,
-                            versatilidad = mazo.estadisticas.versatilidad,
-                            recuperacion = mazo.estadisticas.recuperacion
-                        ),
-                        todasLasCartas = uiState.todasLasCartas,
-                        onComentariosClick = onComentariosClick
-                    )
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        ZonaMazoVista(
+                            mazo = mazo,
+                            cartasDelMazo = cartasDelMazo,
+                            onBack = onBack,
+                            usuario = uiState.usuario,
+                            onAbrirDialogoCopiar = onAbrirDialogoCopiar,
+                            onPerfilAutor = { onPerfilAutor(mazo.userId) }
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(4.dp)
+                                .background(Color.Black)
+                        )
+                        SeccionDetallesVista(
+                            descripcion = mazo.descripcion,
+                            estrategias = mazo.estrategias,
+                            cartasImportantes = cartasImportantes,
+                            estadisticas = estadisticas,
+                            todasLasCartas = uiState.todasLasCartas,
+                            onComentariosClick = onComentariosClick
+                        )
+                    }
                 }
-
                 if (mostrarDialogoCopiar) {
                     DialogoCopiarMazo(
                         mazo = mazo,
