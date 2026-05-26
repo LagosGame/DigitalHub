@@ -88,11 +88,12 @@ fun ComentariosScreen(
                 val mazo = uiState.mazo!!
 
                 Column(modifier = Modifier.fillMaxSize()) {
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color.White.copy(alpha = 0.9f))
-                            .padding(16.dp),
+                            .padding(16.dp, top = 50.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -139,8 +140,6 @@ fun ComentariosScreen(
                                 }
                             }
                         }
-
-                        BotonX(onBack)
                     }
 
 

@@ -66,6 +66,7 @@ fun DetalleMazoContentido(
                 Column(
                     modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
                 ) {
+                    Spacer(modifier = Modifier.height(40.dp))
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()

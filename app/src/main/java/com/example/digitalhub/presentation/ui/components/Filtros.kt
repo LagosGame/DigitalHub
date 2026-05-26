@@ -40,7 +40,7 @@ fun Filtros(
             //Color
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonColor(
-                    text = uiState.colorFiltro?.nombreDisplay?.first()?.toString() ?: "A",
+                    text = uiState.colorFiltro?.nombreDisplay?.first()?.toString() ?: "Color",
                     color = uiState.colorFiltro?.toColor() ?: Color.Gray,
                     onClick = { onAbrirSelector(Selector.COLOR) }
                 )
@@ -52,7 +52,7 @@ fun Filtros(
             //Coste
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonColor(
-                    text = uiState.costeFiltro?.toString() ?: "0",
+                    text = uiState.costeFiltro?.toString() ?: "Cost",
                     color = Color.Gray,
                     onClick = { onAbrirSelector(Selector.COSTE) }
                 )
@@ -64,7 +64,7 @@ fun Filtros(
             //Rareza
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonColor(
-                    text = uiState.rarezaFiltro?.letra ?: "A",
+                    text = uiState.rarezaFiltro?.letra ?: "Rarity",
                     color = Color.Gray,
                     onClick = { onAbrirSelector(Selector.RAREZA) }
                 )
@@ -86,7 +86,7 @@ fun Filtros(
             //Expansión
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonFiltro(
-                    texto = uiState.expansionFiltro?.codigo ?: "ALL",
+                    texto = uiState.expansionFiltro?.codigo ?: "Exp",
                     onClick = { onAbrirSelector(Selector.EXPANSION) }
                 )
                 if (uiState.selectorAbierto == Selector.EXPANSION) {
@@ -107,7 +107,7 @@ fun Filtros(
             //Tipo
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 BotonFiltro(
-                    texto = uiState.tipoFiltro?.nombreDisplay ?: "ALL",
+                    texto = uiState.tipoFiltro?.nombreDisplay ?: "Type",
                     onClick = { onAbrirSelector(Selector.TIPO) }
                 )
                 if (uiState.selectorAbierto == Selector.TIPO) {

@@ -62,7 +62,7 @@ fun ZonaMazoVista(
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
